@@ -5,14 +5,10 @@ import "react-dropdown/style.css";
 import { useNavigate } from "react-router-dom";
 
 function Header() {
-  const options = ["bike", "car", "bus", "train", "truck", "van", "other"];
-
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/form");
   };
-
-  const defaultOption = options[0];
 
   return (
     <section className="header">
@@ -21,11 +17,12 @@ function Header() {
         <button>RUN</button>
         <button>SWIM</button>
         <div className="header-dropdown">
-          <Dropdown
-            options={options}
-            value={defaultOption}
-            placeholder="Select an option"
-          />
+          <select>
+            <option value="bike">bike</option>
+            <option value="car">car</option>
+            <option value="bus">bus</option>
+            <option value="train">train</option>
+          </select>
         </div>
       </div>
       <div className="header-add">
