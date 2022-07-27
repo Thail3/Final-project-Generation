@@ -21,12 +21,12 @@
   margin-right: 20px;
   font-size: 50px;
   border-radius: 50px;
+  cursor: pointer;
 }
 
 .header-dropdown {
   display: flex;
   align-items: center;
-
   margin-right: 50px;
 }
 
