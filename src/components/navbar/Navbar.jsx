@@ -2,7 +2,11 @@ import React from "react";
 import "./navbar.css";
 
 function Navbar() {
-  return <div><h1>WELCOME TO YOUR ACTIVITIES</h1></div>;
+  return (
+    <div class="navbar-head m-2 rounded-3">
+        <span>WELCOME TO YOUR ACTIVITIES</span>
+    </div>
+  )
 }
 
 export default Navbar;
