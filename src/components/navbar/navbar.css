@@ -1,0 +1,8 @@
+.navbar-head {
+    font-size: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    color: rgb(240, 113, 134);
+}
