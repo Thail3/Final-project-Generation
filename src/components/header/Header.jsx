@@ -31,7 +31,7 @@ function Header() {
         </>
       ) : (
         <>
-          <div className="header-activity">
+          <div className="header-activity-change">
             <Link to="/">
               <button>Back</button>
             </Link>

@@ -33,6 +33,9 @@ function FormDetail() {
 
         <div className="form-duration">
           <p>Duration</p>
+          <span>Start</span>
+          <input type="time" name="duration" />
+          <span>End</span>
           <input type="time" name="duration" />
         </div>
 
