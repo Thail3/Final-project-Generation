@@ -3,31 +3,34 @@ import { Button } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { BiRun } from 'react-icons/bi';
 import Form from 'react-bootstrap/Form';
+import './CardComponent.css'
 
 function CardComponent(props) {
+  const { id, name, date, duration, type, description, status } = props.activity
   return (
     <div class="m-4">
-      <Card style={{ width: '24rem' }}>
+      <Card key={id}  style={{ width: '36rem', height: '100%' }}>
         <Card.Header>
           <div class="d-flex justify-content-center">
-            <div class="m-2"><BiRun /></div>
-            <div class="m-2"><Card.Title>Title Name</Card.Title></div>
+            <div class="m-2"><BiRun className="card-font-size-header" /></div>
+            <div class="m-2"><Card.Title><div  className="card-font-size-header">{name}</div> </Card.Title></div>
           </div>
         </Card.Header>
-        <Card.Body> <Card.Text>
+        <Card.Body class="p-3">
+          <Card.Text>
           <div class="d-flex justify-content-between">
-            <div><b>Date: </b><span>27/07/2022</span></div>
+            <div className="card-font-size-body"><b>Date: </b><span>{date}</span></div>
 
-            <div>
-              <b>Duration: </b><span>2 hours</span>
+            <div className="card-font-size-body">
+              <b>Duration: </b><span>{duration}</span>
             </div>
           </div>
-          <div>
-            <b>Type: </b><span>Running</span>
+          <div className="card-font-size-body">
+            <b>Type: </b><span>{type}</span>
           </div>
-          <div>
+          <div className="card-font-size-body">
             <b>Description: </b>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            {description}
           </div>
         </Card.Text>
           <div class="d-flex justify-content-between">
@@ -35,10 +38,11 @@ function CardComponent(props) {
               <Form.Check
                 type="switch"
                 id="custom-switch"
-                label="Status"
+                label={status}
+                className="card-font-size-body"
               />
             </div>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end"  className="card-font-size-body">
               <Button variant="primary m-1">Edit</Button>
               <Button variant="danger m-1">Delete</Button>
             </div>
