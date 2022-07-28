@@ -3,8 +3,11 @@ import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { BiRun } from "react-icons/bi";
 import Form from "react-bootstrap/Form";
+import "./CardComponent.css";
 
 function CardComponent(props) {
+  const { id, name, date, duration, type, description, status } =
+    props.activity;
   return (
     <div class="m-4">
       <Card style={{ width: "24rem" }}>
@@ -45,7 +48,10 @@ function CardComponent(props) {
             <div class="d-flex align-items-center">
               <Form.Check type="switch" id="custom-switch" label="Status" />
             </div>
-            <div class="d-flex justify-content-end">
+            <div
+              class="d-flex justify-content-end"
+              className="card-font-size-body"
+            >
               <Button variant="primary m-1">Edit</Button>
               <Button variant="danger m-1">Delete</Button>
             </div>
