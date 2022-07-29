@@ -6,11 +6,28 @@ import "./form.css";
 
 function Form() {
   return (
-    <div>
-      <Navbar />
-      <div>
-        <Header />
-        <FormDetail />
+    <div className="form-page">
+      <div className="area">
+        <ul className="circles">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+
+      <div className="form-page">
+        <Navbar />
+        <div>
+          <Header />
+          <FormDetail />
+        </div>
       </div>
     </div>
   );
