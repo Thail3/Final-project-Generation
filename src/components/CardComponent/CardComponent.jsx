@@ -30,7 +30,7 @@ function CardComponent({
           </div>
         </Card.Header>
         <Card.Body className="p-3" style={{ zIndex: 1 }}>
-          <Card.Text>
+          <div>
             <div className="d-flex justify-content-between">
               <div className="card-font-size-body">
                 <b>Date: </b>
@@ -50,7 +50,7 @@ function CardComponent({
               <b>Description: </b>
               {description}
             </div>
-          </Card.Text>
+          </div>
           <div className="d-flex justify-content-between">
             <div className="d-flex align-items-center">
               <Form.Check

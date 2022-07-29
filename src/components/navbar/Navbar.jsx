@@ -3,7 +3,7 @@ import "./navbar.css";
 
 function Navbar() {
   return (
-    <div class="navbar-head m-2 rounded-3">
+    <div className="navbar-head m-2 rounded-3">
       <span>WELCOME TO YOUR ACTIVITIES</span>
     </div>
   );
