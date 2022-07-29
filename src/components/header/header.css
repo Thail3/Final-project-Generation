@@ -9,7 +9,6 @@
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: top left;
-  z-index: -5;
 }
 
 .header-activity {
@@ -35,6 +34,7 @@
   font-size: 50px;
   border-radius: 50px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .header-activity-change button {
@@ -47,12 +47,14 @@
   font-size: 50px;
   border-radius: 50px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .header-dropdown {
   display: flex;
   align-items: center;
   margin-right: 50px;
+  z-index: 1;
 }
 
 .header-dropdown select {
@@ -73,6 +75,7 @@
   margin-right: 50px;
   display: flex;
   align-items: center;
+  z-index: 1;
 }
 
 .header-add button {

@@ -5,53 +5,62 @@ import { BiRun } from "react-icons/bi";
 import Form from "react-bootstrap/Form";
 import "./CardComponent.css";
 
-function CardComponent(props) {
-  const { id, name, date, duration, type, description, status } =
-    props.activity;
+function CardComponent({
+  id,
+  name,
+  date,
+  duration,
+  type,
+  description,
+  status,
+}) {
   return (
-    <div class="m-4">
-      <Card style={{ width: "24rem" }}>
+    <div className="m-4">
+      <Card key={id} style={{ width: "36rem", height: "100%" }}>
         <Card.Header>
-          <div class="d-flex justify-content-center">
-            <div class="m-2">
-              <BiRun />
+          <div className="d-flex justify-content-center">
+            <div className="m-2">
+              <BiRun className="card-font-size-header" />
             </div>
-            <div class="m-2">
-              <Card.Title>Title Name</Card.Title>
+            <div className="m-2">
+              <Card.Title>
+                <div className="card-font-size-header">{name}</div>{" "}
+              </Card.Title>
             </div>
           </div>
         </Card.Header>
-        <Card.Body>
-          {" "}
+        <Card.Body className="p-3" style={{ zIndex: 1 }}>
           <Card.Text>
-            <div class="d-flex justify-content-between">
-              <div>
+            <div className="d-flex justify-content-between">
+              <div className="card-font-size-body">
                 <b>Date: </b>
-                <span>27/07/2022</span>
+                <span>{date}</span>
               </div>
 
-              <div>
+              <div className="card-font-size-body">
                 <b>Duration: </b>
-                <span>2 hours</span>
+                <span>{duration}</span>
               </div>
             </div>
-            <div>
+            <div className="card-font-size-body">
               <b>Type: </b>
-              <span>Running</span>
+              <span>{type}</span>
             </div>
-            <div>
+            <div className="card-font-size-body">
               <b>Description: </b>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              {description}
             </div>
           </Card.Text>
-          <div class="d-flex justify-content-between">
-            <div class="d-flex align-items-center">
-              <Form.Check type="switch" id="custom-switch" label="Status" />
+          <div className="d-flex justify-content-between">
+            <div className="d-flex align-items-center">
+              <Form.Check
+                type="switch"
+                id="custom-switch"
+                label={status}
+                className="card-font-size-body"
+              />
             </div>
-            <div
-              class="d-flex justify-content-end"
-              className="card-font-size-body"
-            >
+            <div className="d-flex justify-content-end card-font-size-body">
               <Button variant="primary m-1">Edit</Button>
               <Button variant="danger m-1">Delete</Button>
             </div>
