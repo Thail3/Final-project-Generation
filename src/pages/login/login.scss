@@ -1,0 +1,67 @@
+$d: 20; // density
+$w: 500; // grid size
+$s: 4s; // speed
+
+// Generate the snow image using radial gradients
+$grad: ();
+@for $i from 0 to $d {
+  $v: random(4) + 2;
+  $a: random(5) * 0.1 + 0.5;
+  $grad: $grad,
+    radial-gradient(
+      $v +
+        px
+        $v +
+        px
+        at
+        (random($w - $v * 2) + $v) +
+        px
+        (random($w - $v * 2) + $v) +
+        px,
+      rgba(255, 255, 255, $a) 50%,
+      rgba(0, 0, 0, 0)
+    ) !global;
+}
+
+.snow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  background: $grad;
+}
+
+//   background: linear-gradient(#123 30%, #667);
+
+.snow,
+.snow:before,
+.snow:after {
+  position: absolute;
+  top: -40%;
+  left: 0;
+  bottom: -10%;
+  right: 0;
+  background-image: $grad;
+  background-size: $w + px $w + px;
+  animation: snow $s linear infinite;
+  content: "";
+}
+.snow:after {
+  opacity: 0.4;
+  animation-duration: $s * 3;
+  animation-direction: alternate-reverse;
+  filter: blur(3px);
+}
+.snow:before {
+  animation-duration: $s * 5;
+  animation-direction: alternate-reverse;
+  opacity: 0.65;
+  filter: blur(1.5px);
+}
+@keyframes snow {
+  to {
+    transform: translateY($w + px);
+  }
+}
