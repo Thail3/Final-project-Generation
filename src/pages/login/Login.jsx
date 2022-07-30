@@ -5,9 +5,9 @@ import "./login.scss";
 
 function login() {
   return (
-    <div>
-      <div className="snow"></div>
+    <div className="login-page">
       <Login_Form />
+      <div className="snow"></div>
     </div>
   );
 }
