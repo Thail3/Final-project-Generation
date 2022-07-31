@@ -39,3 +39,62 @@
   cursor: pointer;
   color: brown;
 }
+
+@media screen and (min-width: 390px) {
+  .footer-profile-icon {
+    font-size: 2.5rem;
+    top: 90%;
+    right: -10%;
+    transform: translate(-50%, -50%);
+  }
+
+  .footer-arrow {
+    width: 15px;
+    height: 15px;
+  }
+
+  .footer-numberPage button {
+    font-size: 20px;
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .footer-profile-icon {
+    position: fixed;
+    font-size: 3rem;
+    top: 90%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+  }
+
+  .footer-arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .footer-numberPage button {
+    font-size: 20px;
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .footer-profile-icon {
+    font-size: 3.5rem;
+    top: 95%;
+    right: -9%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media screen and (min-width: 2190px) {
+  .footer-profile-icon {
+    font-size: 5rem;
+    top: 90%;
+    right: 93%;
+    transform: translate(-50%, -50%);
+  }
+}

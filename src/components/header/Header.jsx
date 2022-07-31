@@ -28,6 +28,23 @@ function Header() {
               <button>ADD ACTIVITIES</button>
             </Link>
           </div>
+
+          <div className="header-activity-responsive">
+            <button>ALL</button>
+            <div className="header-dropdown">
+              <select>
+                <option value="bike">bike</option>
+                <option value="car">car</option>
+                <option value="bus">bus</option>
+                <option value="train">train</option>
+              </select>
+            </div>
+          </div>
+          <div className="header-add-responsive">
+            <Link to="/form">
+              <button>ADD ACTIVITIES</button>
+            </Link>
+          </div>
         </>
       ) : (
         <>

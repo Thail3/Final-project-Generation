@@ -16,9 +16,13 @@ function CardComponent({
 }) {
   return (
     <div className="m-4">
-      <Card key={id} style={{ width: "36rem", height: "100%" }}>
+      <Card
+        className="card-component"
+        key={id}
+        style={{ width: "36rem", height: "100%" }}
+      >
         <Card.Header>
-          <div className="d-flex justify-content-center">
+          <div className="card-component-title d-flex justify-content-center">
             <div className="m-2">
               <BiRun className="card-font-size-header" />
             </div>
@@ -29,9 +33,9 @@ function CardComponent({
             </div>
           </div>
         </Card.Header>
-        <Card.Body className="p-3" style={{ zIndex: 1 }}>
-          <div>
-            <div className="d-flex justify-content-between">
+        <Card.Body className="card-component-detail p-3" style={{ zIndex: 1 }}>
+          <div className="card-component-detail-date">
+            <div className=" d-flex justify-content-between">
               <div className="card-font-size-body">
                 <b>Date: </b>
                 <span>{date}</span>
@@ -42,16 +46,18 @@ function CardComponent({
                 <span>{duration}</span>
               </div>
             </div>
+
             <div className="card-font-size-body">
               <b>Type: </b>
               <span>{type}</span>
             </div>
             <div className="card-font-size-body">
               <b>Description: </b>
-              {description}
+              <span>{description}</span>
             </div>
           </div>
-          <div className="d-flex justify-content-between">
+
+          <div className="card-component-bottom d-flex justify-content-between">
             <div className="d-flex align-items-center">
               <Form.Check
                 type="switch"
