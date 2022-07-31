@@ -4,7 +4,7 @@ import ProfileComponent from "../../components/ProfileComponent/ProfileComponent
 
 export default function Profile() {
   return (
-    <div>
+    <div style={{ backgroundColor: "#f0f2f5" }}>
       <Navbar />
       <ProfileComponent />
     </div>
