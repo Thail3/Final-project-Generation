@@ -7,12 +7,12 @@ function Login_Form() {
     <section className="login-form">
       <div className="login-email">
         <p>EMAIL</p>
-        <input type="text" />
+        <input type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
       </div>
 
       <div className="login-password">
         <p>PASSWORD</p>
-        <input type="text" />
+        <input type="text" pattern=".{8,}" />
       </div>
 
       <div className="login-button">
