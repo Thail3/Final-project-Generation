@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Form from "./pages/form/Form";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
+import Login from "./pages/login/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Register from "./pages/register/Register";
 
 function App() {
   return (
@@ -12,6 +14,10 @@ function App() {
         <Route path="/form" element={<Form />} />
         <Route path="/form/:id" element={<Form />} />
         <Route path="/profile" element={<Profile />} />
+      </Routes>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </BrowserRouter>
   );

@@ -5,6 +5,18 @@
   height: 100px;
 }
 
+.footer-profile-icon {
+  font-size: 5rem;
+  margin-right: 2rem;
+  display: flex;
+  justify-content: flex-end;
+  position: fixed;
+  top: 85%;
+  right: 1.5%;
+  cursor: pointer;
+  color: rgb(87, 96, 179);
+}
+
 .footer-numberPage {
   margin-left: 20px;
   margin-right: 20px;
