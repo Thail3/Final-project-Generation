@@ -1,6 +1,148 @@
 .card-font-size-header {
-    font-size: 3rem;
+  font-size: 3rem;
 }
 .card-font-size-body {
-    font-size: 1.45rem;
+  font-size: 1.45rem;
+}
+
+@media screen and (min-width: 390px) {
+  .card-component {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 20rem !important;
+  }
+
+  .card-component-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+  }
+
+  .card-component-title {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 18rem;
+  }
+
+  .card-component-title div {
+    font-size: 1.5rem;
+  }
+
+  .card-component-detail-date b {
+    font-size: 1rem;
+  }
+
+  .card-component-detail-date span {
+    font-size: 0.8rem;
+  }
+
+  .card-component-bottom {
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    width: 18rem;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .card-component {
+    width: 30rem !important;
+  }
+
+  .card-component-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-component-title {
+    display: flex;
+    align-items: center;
+    width: 28rem;
+    height: 50px;
+  }
+
+  .card-component-title div {
+    font-size: 2rem;
+  }
+
+  .card-component-detail-date b {
+    font-size: 1.2rem;
+  }
+
+  .card-component-detail-date span {
+    font-size: 1rem;
+  }
+
+  .card-component-bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 93%;
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .card-component-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+  }
+
+  .card-component-detail-date b {
+    font-size: 1rem;
+  }
+
+  .card-component-detail-date span {
+    font-size: 1.5rem;
+  }
+
+  .card-component-bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 2190px) {
+  .justify-content-around {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .card-component-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 50px;
+  }
+
+  .card-component-detail-date b {
+    font-size: 2rem;
+  }
+
+  .card-component-detail-date span {
+    font-size: 2rem;
+  }
+
+  .card-component-bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
 }
