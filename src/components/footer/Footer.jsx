@@ -1,13 +1,16 @@
 import React from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
+import { Link } from "react-router-dom";
 import "./footer.css";
 
 function Footer() {
   return (
     <section>
       <div className="footer-profile-icon">
-        <CgProfile />
+        <Link to="/profile">
+          <CgProfile />
+        </Link>
       </div>
 
       <div className="footer-pagination">
