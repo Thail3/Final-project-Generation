@@ -11,7 +11,6 @@ export default function ProfileComponent({
   profilePhoto = "https://pbs.twimg.com/profile_images/429442426038538240/6Ac9kykG_400x400.jpeg",
   coverPhoto = "https://images.template.net/wp-content/uploads/2014/11/facebook-cover-photos-nature.jpg",
   email = "foobar@foobar.com",
-  bio = "Lorem ipsum dolor sit amet consectetur consequatur",
 }) {
   return (
     <div className="container p-0 profile text-center">
@@ -21,17 +20,17 @@ export default function ProfileComponent({
             <img src={coverPhoto} alt="cover" width="100%" height="100%" />
           </div>
         </div>
-        <div className="mt-5 profile-photo">
+        <div className="mt-3 profile-photo">
           <Avatar name={username} src={profilePhoto} round={true} size={200} />
         </div>
-        <div className="">
+        <div className="profile-change-pic">
           <Button variant="outline-primary" size="lg" className="m-3">
             <AiFillPicture className="m-1 mb-2" />
             <span className="m-2">Update profile picture</span>
           </Button>
           <Button variant="outline-secondary" size="lg" className="m-3">
-          <AiFillPicture className="m-1 mb-2" />
-          <span className="m-2">Update cover picture</span>
+            <AiFillPicture className="m-1 mb-2" />
+            <span className="m-2">Update cover picture</span>
           </Button>
         </div>
       </div>
@@ -41,9 +40,9 @@ export default function ProfileComponent({
         <div>
           <h1>Name : {username}</h1>
         </div>
-        <div className="fs-4">Email : {email}</div>
-        <div className="fs-3 mt-2">Bio: {bio}</div>
-        <div className="footer mt-3  btn-block">
+        {/* <div className="fs-4">Email : {email}</div> */}
+
+        {/* <div className="footer mt-3  btn-block">
           <Button
             variant="outline-primary"
             size="lg"
@@ -60,7 +59,7 @@ export default function ProfileComponent({
             <BsFillShieldLockFill className="m-1 mb-2" />
             <span className="m-2">Change password</span>
           </Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
