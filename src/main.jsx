@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
-import { AppProvider } from "./context/Context";
+import { AppProvider } from "../src/context/Context";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <AppProvider>
-    <React.StrictMode>
+  <React.StrictMode>
+    <AppProvider>
       <App />
-    </React.StrictMode>
-  </AppProvider>
+    </AppProvider>
+  </React.StrictMode>
 );
