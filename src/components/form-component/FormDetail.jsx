@@ -7,7 +7,7 @@ function FormDetail() {
       <form className="form-component">
         <div className="form-title">
           <label htmlFor="name">Title</label>
-          <input type="text" name="title" />
+          <input type="text" name="title" pattern=".{,120}" />
         </div>
 
         <div className="form-img">
@@ -41,7 +41,7 @@ function FormDetail() {
 
         <div className="form-desc">
           <p>Description</p>
-          <input type="text" name="description" />
+          <input type="text" name="description" pattern=".{,120}" />
         </div>
 
         <button>ADD ACTIVITIES</button>
