@@ -1,13 +1,34 @@
 import React from "react";
 import "./formDetail.css";
+import { Link } from "react-router-dom";
+import { useGlobalContext } from "../../context/Context";
 
 function FormDetail() {
+  const {
+    setTitle,
+    setImgActivities,
+    setType,
+    setDate,
+    setStartDuration,
+    setEndDuration,
+    setDescription,
+  } = useGlobalContext();
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <section>
-      <form className="form-component">
+      <form className="form-component" onSubmit={handleSubmitForm}>
         <div className="form-title">
           <label htmlFor="name">Title</label>
-          <input type="text" name="title" pattern=".{,120}" />
+          <input
+            type="text"
+            name="title"
+            pattern=".{,120}"
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </div>
 
         <div className="form-img">
@@ -19,7 +40,7 @@ function FormDetail() {
 
         <div className="form-type-select">
           <p>Type</p>
-          <select name="type">
+          <select name="type" onChange={(e) => setType(e.target.value)}>
             <option value="run">Run</option>
             <option value="swim">Swim</option>
             <option value="fly">Fly</option>
@@ -28,20 +49,37 @@ function FormDetail() {
 
         <div className="form-date-time">
           <p>Date / Time</p>
-          <input type="date" name="date" />
+          <input
+            type="date"
+            name="date"
+            onChange={(e) => setDate(e.target.value)}
+          />
         </div>
 
         <div className="form-duration">
           <p>Duration</p>
           <span>Start</span>
-          <input type="time" name="duration" />
+          <input
+            type="time"
+            name="duration"
+            onChange={(e) => setStartDuration(e.target.value)}
+          />
           <span>End</span>
-          <input type="time" name="duration" />
+          <input
+            type="time"
+            name="duration"
+            onChange={(e) => setEndDuration(e.target.value)}
+          />
         </div>
 
         <div className="form-desc">
           <p>Description</p>
-          <input type="text" name="description" pattern=".{,120}" />
+          <input
+            type="text"
+            name="description"
+            pattern=".{,120}"
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </div>
 
         <button>ADD ACTIVITIES</button>
