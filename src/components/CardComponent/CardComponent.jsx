@@ -4,6 +4,7 @@ import Card from "react-bootstrap/Card";
 import { BiRun } from "react-icons/bi";
 import Form from "react-bootstrap/Form";
 import "./CardComponent.css";
+import { useGlobalContext } from "../../context/Context";
 
 function CardComponent({
   id,
@@ -14,6 +15,13 @@ function CardComponent({
   description,
   status,
 }) {
+  const { deleteActivity } = useGlobalContext();
+
+  const handleClickDelete = (e) => {
+    e.preventDefault();
+    deleteActivity(id);
+  };
+
   return (
     <div className="m-4">
       <Card
@@ -43,7 +51,7 @@ function CardComponent({
 
               <div className="card-font-size-body">
                 <b>Duration: </b>
-                <span>{duration} Hours</span>
+                <span>{duration} Minutes</span>
               </div>
             </div>
 
@@ -68,7 +76,13 @@ function CardComponent({
             </div>
             <div className="d-flex justify-content-end card-font-size-body">
               <Button variant="primary m-1">Edit</Button>
-              <Button variant="danger m-1">Delete</Button>
+              <Button
+                variant="danger m-1"
+                type="button"
+                onClick={handleClickDelete}
+              >
+                Delete
+              </Button>
             </div>
           </div>
         </Card.Body>
