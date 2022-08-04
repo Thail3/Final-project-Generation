@@ -7,7 +7,7 @@ import "./CardComponent.css";
 
 function CardComponent({
   id,
-  name,
+  title,
   date,
   duration,
   type,
@@ -28,7 +28,7 @@ function CardComponent({
             </div>
             <div className="m-2">
               <Card.Title>
-                <div className="card-font-size-header">{name}</div>{" "}
+                <div className="card-font-size-header">{title}</div>{" "}
               </Card.Title>
             </div>
           </div>
@@ -38,12 +38,12 @@ function CardComponent({
             <div className=" d-flex justify-content-between">
               <div className="card-font-size-body">
                 <b>Date: </b>
-                <span>{date}</span>
+                <span>{date.slice(0, 10)}</span>
               </div>
 
               <div className="card-font-size-body">
                 <b>Duration: </b>
-                <span>{duration}</span>
+                <span>{duration} Hours</span>
               </div>
             </div>
 
