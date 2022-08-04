@@ -11,12 +11,12 @@ function Container(props) {
     <CardComponent
       key={index}
       activity={activity}
-      id={activity.id}
-      name={activity.name}
+      id={activity._id}
+      title={activity.title}
       date={activity.date}
       duration={activity.duration}
       type={activity.type}
-      description={activity.description}
+      description={activity.desc}
       status={activity.status}
     />
   ));

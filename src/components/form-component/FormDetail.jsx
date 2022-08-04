@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./formDetail.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/Context";
 
 function FormDetail() {
@@ -12,10 +12,27 @@ function FormDetail() {
     setStartDuration,
     setEndDuration,
     setDescription,
+    createActivity,
   } = useGlobalContext();
+
+  const navigate = useNavigate();
+
+  const changeImg = () => {
+    if (setType() === "Running") {
+      setImgActivities("");
+    } else if (setType() === "Cycling") {
+      setImgActivities("");
+    } else if (setType() === "Swimming") {
+      setImgActivities("");
+    } else if (setType() === "Walking") {
+      setImgActivities("");
+    }
+  };
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
+    createActivity();
+    navigate("/");
   };
 
   return (
@@ -31,12 +48,15 @@ function FormDetail() {
           />
         </div>
 
-        <div className="form-img">
-          <img
-            src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
-            alt=""
-          />
-        </div>
+        {setType ? (
+          <div className="form-img">
+            <img
+              src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
+              alt=""
+              onChange={changeImg}
+            />
+          </div>
+        ) : null}
 
         <div className="form-type-select">
           <p>Type</p>
@@ -64,12 +84,15 @@ function FormDetail() {
             name="duration"
             onChange={(e) => setStartDuration(e.target.value)}
           />
+
           <span>End</span>
           <input
             type="time"
             name="duration"
             onChange={(e) => setEndDuration(e.target.value)}
           />
+
+          {/* Change type to be Number and delete start */}
         </div>
 
         <div className="form-desc">
