@@ -105,7 +105,7 @@ function FormDetail() {
           />
         </div>
 
-        <button>ADD ACTIVITIES</button>
+        <button type="submit">ADD ACTIVITIES</button>
       </form>
     </section>
   );

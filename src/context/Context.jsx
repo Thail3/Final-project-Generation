@@ -60,6 +60,7 @@ const AppProvider = ({ children }) => {
     //   status: "status 5",
     // },
   ]);
+
   const [title, setTitle] = useState("");
   console.log(title);
   const [imgActivities, setImgActivities] = useState("");
@@ -79,11 +80,38 @@ const AppProvider = ({ children }) => {
   const [logout, setLogout] = useState("");
   const [userName, setUserName] = useState("");
 
+  const duration = () => {
+    const start = new Date(
+      +date.substring(0, 4),
+      +date.substring(5, 7) - 1,
+      +date.substring(8, 10),
+      +startDuration.substring(0, 2),
+      +startDuration.substring(3, 5),
+      0,
+      0
+    );
+    const end = new Date(
+      +date.substring(0, 4),
+      +date.substring(5, 7) - 1,
+      +date.substring(8, 10),
+      +endDuration.substring(0, 2),
+      +endDuration.substring(3, 5),
+      0,
+      0
+    );
+    let minutes = Math.round((end.getTime() - start.getTime()) / 1000 / 60);
+    return minutes;
+  };
+  console.log(duration());
+
   const url = "http://localhost:8000";
 
   const fetchData = async () => {
     try {
       const res = await axios.get(`${url}/activity`);
+      res.data.sort((a, b) => {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
       setActivities(res.data);
     } catch (e) {
       console.log(e);
@@ -96,14 +124,20 @@ const AppProvider = ({ children }) => {
 
   const createActivity = async () => {
     try {
-      await axios.post(`${url}/activity`);
+      await axios.post(`${url}/activity`, {
+        title: title,
+        type: type,
+        date: date,
+        duration: duration(),
+        desc: description,
+      });
       fetchData();
     } catch (e) {
       console.log(e);
     }
   };
 
-  const updateActivity = async () => {
+  const updateActivity = async (id) => {
     try {
       const idx = activities.findIndex((activity) => activity._id === id);
       const newActivity = [...activities];
@@ -115,7 +149,7 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  const deleteActivity = async () => {
+  const deleteActivity = async (id) => {
     try {
       await axios.delete(`${url}/activity/${id}`);
       const newActivity = activities.filter((activity) => activity._id !== id);
