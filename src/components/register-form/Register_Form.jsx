@@ -37,7 +37,7 @@ function Register_Form() {
     if (!values.username) {
       errors.username = "Username is required!";
     } else if (values.username.length < 4) {
-      errors.username = "Username must be more than 8 characters";
+      errors.username = "Username must be more than 4 characters";
     } else if (values.username.length > 16) {
       errors.username = "Username cannot exceed more than 16 characters";
     }
@@ -131,7 +131,7 @@ function Register_Form() {
         </div>
       ) : ("")}
         <div className="register-form-button">
-          <button>REGISTER</button>
+          <button type="submit" onClick={handleSubmit}>REGISTER</button>
         </div>
       </Form>
     </section>
