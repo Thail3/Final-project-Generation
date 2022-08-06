@@ -44,3 +44,28 @@
     font-size: 20px;
   }
 }
+@media screen and (max-width: 520px) {
+  .navbar-head span {
+    font-size: 0px;
+  }
+}
+@media screen and (min-width: 760px) {
+  .navbar-head span {
+    font-size: 24px;
+  }
+}
+@media screen and (min-width: 992px) {
+  .navbar-head span {
+    font-size: 30px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .navbar-head span {
+    font-size: 35px;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .navbar-head span {
+    font-size: 40px;
+  }
+}

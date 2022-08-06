@@ -3,6 +3,7 @@ import "./navbar.css";
 import Button from "react-bootstrap/Button";
 import { Link, useLocation } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 
 function Navbar() {
   const location = useLocation();
@@ -17,6 +18,14 @@ function Navbar() {
       </Link> : null}
       
       <span>WELCOME TO YOUR ACTIVITIES</span>
+
+      {location.pathname === "/profile" ?
+      <Link to="/">
+        <Button variant="outline-danger" size="lg" className="logoutButton">
+        <RiLogoutBoxRLine className="mb-1" />
+          {" Log Out"}
+        </Button>
+      </Link> : null}
     </div>
   );
 }
