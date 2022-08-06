@@ -5,12 +5,19 @@ import { useGlobalContext } from "../../context/Context";
 
 function FormDetail() {
   const {
+    title,
     setTitle,
+    imgActivities,
     setImgActivities,
+    type,
     setType,
+    date,
     setDate,
+    startDuration,
     setStartDuration,
+    endDuration,
     setEndDuration,
+    description,
     setDescription,
     createActivity,
   } = useGlobalContext();
@@ -44,6 +51,7 @@ function FormDetail() {
             type="text"
             name="title"
             pattern=".{,120}"
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
@@ -53,6 +61,7 @@ function FormDetail() {
             <img
               src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
               alt=""
+              value={imgActivities}
               onChange={changeImg}
             />
           </div>
@@ -60,7 +69,11 @@ function FormDetail() {
 
         <div className="form-type-select">
           <p>Type</p>
-          <select name="type" onChange={(e) => setType(e.target.value)}>
+          <select
+            name="type"
+            onChange={(e) => setType(e.target.value)}
+            value={type}
+          >
             <option value="run">Run</option>
             <option value="swim">Swim</option>
             <option value="fly">Fly</option>
@@ -72,6 +85,7 @@ function FormDetail() {
           <input
             type="date"
             name="date"
+            value={date}
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
@@ -82,13 +96,18 @@ function FormDetail() {
           <input
             type="time"
             name="duration"
-            onChange={(e) => setStartDuration(e.target.value)}
+            value={startDuration}
+            onChange={(e) => {
+              console.log("form detail start duration", e.target.value);
+              setStartDuration(e.target.value);
+            }}
           />
 
           <span>End</span>
           <input
             type="time"
             name="duration"
+            value={endDuration}
             onChange={(e) => setEndDuration(e.target.value)}
           />
 
@@ -101,6 +120,7 @@ function FormDetail() {
             type="text"
             name="description"
             pattern=".{,120}"
+            value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>

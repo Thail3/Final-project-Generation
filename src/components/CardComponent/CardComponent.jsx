@@ -5,6 +5,7 @@ import { BiRun } from "react-icons/bi";
 import Form from "react-bootstrap/Form";
 import "./CardComponent.css";
 import { useGlobalContext } from "../../context/Context";
+import { useNavigate } from "react-router-dom";
 
 function CardComponent({
   id,
@@ -15,11 +16,34 @@ function CardComponent({
   description,
   status,
 }) {
-  const { deleteActivity } = useGlobalContext();
+  const {
+    deleteActivity,
+    statusActivity,
+    setStatusActivity,
+    updateActivity,
+    setActivityData,
+  } = useGlobalContext();
+
+  console.log(statusActivity);
+
+  const navigate = useNavigate();
+
+  const handleClickEdit = () => {
+    setActivityData(title, type, date, duration, description);
+    navigate(`/form/${id}`);
+  };
 
   const handleClickDelete = (e) => {
     e.preventDefault();
     deleteActivity(id);
+  };
+
+  const handleclickChangeStatus = () => {
+    console.log(id);
+    const oldStatus = statusActivity.get(id);
+    statusActivity.set(id, !oldStatus);
+    // setStatusActivity(new Map(JSON.parse(JSON.stringify([...statusActivity]))));
+    setStatusActivity(new Map(statusActivity));
   };
 
   return (
@@ -66,16 +90,48 @@ function CardComponent({
           </div>
 
           <div className="card-component-bottom d-flex justify-content-between">
-            <div className="d-flex align-items-center">
-              <Form.Check
-                type="switch"
-                id="custom-switch"
-                label={status}
-                className="card-font-size-body"
-              />
-            </div>
+            {statusActivity.get(id) ? (
+              <>
+                <div className="d-flex align-items-center">
+                  <Form.Check
+                    type="switch"
+                    id={id}
+                    label={status}
+                    className="card-font-size-body"
+                    onClick={handleclickChangeStatus}
+                  />
+                  <p
+                    style={{
+                      color: "green",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Success
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="d-flex align-items-center">
+                  <Form.Check
+                    type="switch"
+                    // id="custom-switch"
+                    id={id}
+                    label={status}
+                    className="card-font-size-body"
+                    onClick={handleclickChangeStatus}
+                  />
+                </div>
+              </>
+            )}
             <div className="d-flex justify-content-end card-font-size-body">
-              <Button variant="primary m-1">Edit</Button>
+              <Button
+                variant="primary m-1"
+                type="button"
+                onClick={handleClickEdit}
+              >
+                Edit
+              </Button>
               <Button
                 variant="danger m-1"
                 type="button"
