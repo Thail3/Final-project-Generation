@@ -1,19 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Form from "react-bootstrap/Form";
 import "./formDetail.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/Context";
+import InputGroup from "react-bootstrap/InputGroup";
+import Button from "react-bootstrap/Button";
 
 function FormDetail() {
   const {
+    title,
     setTitle,
+    imgActivities,
     setImgActivities,
+    type,
     setType,
+    date,
     setDate,
+    startDuration,
     setStartDuration,
+    endDuration,
     setEndDuration,
+    description,
     setDescription,
     createActivity,
+    clearActivity,
   } = useGlobalContext();
+  const initialValues = {
+    title: title || "",
+    date: date || new Date().toISOString().substring(0, 10),
+    type: type || "run",
+    startDuration: startDuration || "",
+    endDuration: endDuration || "",
+    description: description || "",
+    imgActivities: imgActivities || "",
+  };
+  const [formValues, setFormValues] = useState(initialValues);
+  const [formErrors, setFormErrors] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
 
   const navigate = useNavigate();
 
@@ -31,28 +59,113 @@ function FormDetail() {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    createActivity();
-    navigate("/");
+    setFormErrors(validate(formValues));
+    setIsSubmit(true);
+    console.log("formValues date :", formValues.date);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors(validate(formValues));
+    setIsSubmit(true);
+  };
+
+  const clearFormValues = () => {
+    clearActivity()
+    setFormValues(initialValues)
+  }
+
+  useEffect(() => {
+    console.log("date eff :", date);
+    console.log("use effect isSubmit : ", isSubmit);
+    console.log("use effect formErrors : ", formErrors);
+    if (Object.keys(formErrors).length === 0 && isSubmit) {
+      console.log("use effect form value in if : ", formValues);
+      createActivity();
+      clearFormValues();
+      navigate("/");
+    }
+    console.log("use effect form value : ", formValues);
+
+  }, [formErrors]);
+
+  const validate = (values) => {
+    const errors = {};
+    if (!values.title) {
+      errors.title = "Title is required!";
+    } else if (values.title.length > 140) {
+      errors.title = "Title cannot exceed more than 140 characters";
+    }
+    if (!values.date) {
+      errors.date = "Date is required";
+    }
+    if (!values.type) {
+      errors.type = "Type is required";
+    }
+    if (!values.startDuration) {
+      errors.startDuration = "Start duration is required";
+    }
+    if (!values.endDuration) {
+      errors.endDuration = "End duration is required";
+    }
+    if (!values.description) {
+      errors.description = "Description is required";
+    }
+    return errors;
+  };
+
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+    handleChange(e);
+  };
+
+  const handleTypeChange = (e) => {
+    setType(e.target.value);
+    handleChange(e);
+  };
+  const handleDateChange = (e) => {
+    setDate(e.target.value);
+    handleChange(e);
+  };
+  const handleStartDuration = (e) => {
+    console.log("form detail start duration", e.target.value);
+    setStartDuration(e.target.value);
+    handleChange(e);
+  };
+  const handleEndDuration = (e) => {
+    setEndDuration(e.target.value);
+    handleChange(e);
+  };
+  const handleDescription = (e) => {
+    setDescription(e.target.value);
+    handleChange(e);
   };
 
   return (
     <section>
-      <form className="form-component" onSubmit={handleSubmitForm}>
+      <Form className="form-component" noValidate onSubmit={handleSubmitForm}>
         <div className="form-title">
           <label htmlFor="name">Title</label>
           <input
             type="text"
             name="title"
             pattern=".{,120}"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
+            value={formValues.title}
           />
         </div>
+        {formErrors.title ? (
+          <div className="text-danger m-2">{formErrors.title}</div>
+        ) : (
+          ""
+        )}
 
         {setType ? (
           <div className="form-img">
             <img
               src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
               alt=""
+              value={formValues.imgActivities}
               onChange={changeImg}
             />
           </div>
@@ -60,39 +173,65 @@ function FormDetail() {
 
         <div className="form-type-select">
           <p>Type</p>
-          <select name="type" onChange={(e) => setType(e.target.value)}>
+          <select
+            name="type"
+            onChange={handleTypeChange}
+            value={formValues.type}
+          >
             <option value="run">Run</option>
             <option value="swim">Swim</option>
             <option value="fly">Fly</option>
           </select>
         </div>
+        {formErrors.type ? (
+          <div className="text-danger m-2">{formErrors.type}</div>
+        ) : (
+          ""
+        )}
 
         <div className="form-date-time">
           <p>Date / Time</p>
           <input
             type="date"
             name="date"
-            onChange={(e) => setDate(e.target.value)}
+            onChange={handleDateChange}
+            value={formValues.date}
           />
         </div>
+        {formErrors.date ? (
+          <div className="text-danger m-2">{formErrors.date}</div>
+        ) : (
+          ""
+        )}
 
         <div className="form-duration">
           <p>Duration</p>
           <span>Start</span>
           <input
             type="time"
-            name="duration"
-            onChange={(e) => setStartDuration(e.target.value)}
+            name="startDuration"
+            onChange={handleStartDuration}
+            value={formValues.startDuration}
           />
+          {formErrors.startDuration ? (
+          <div className="text-danger m-2">{formErrors.startDuration}</div>
+        ) : (
+          ""
+        )}
 
           <span>End</span>
           <input
             type="time"
-            name="duration"
-            onChange={(e) => setEndDuration(e.target.value)}
+            name="endDuration"
+            onChange={handleEndDuration}
+            value={formValues.endDuration}
           />
+          {formErrors.endDuration ? (
+          <div className="text-danger m-2">{formErrors.endDuration}</div>
+        ) : (
+          ""
+        )}
 
-          {/* Change type to be Number and delete start */}
         </div>
 
         <div className="form-desc">
@@ -101,12 +240,18 @@ function FormDetail() {
             type="text"
             name="description"
             pattern=".{,120}"
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={handleDescription}
+            value={formValues.description}
           />
         </div>
+        {formErrors.description ? (
+          <div className="text-danger m-2">{formErrors.description}</div>
+        ) : (
+          ""
+        )}
 
         <button type="submit">ADD ACTIVITIES</button>
-      </form>
+      </Form>
     </section>
   );
 }

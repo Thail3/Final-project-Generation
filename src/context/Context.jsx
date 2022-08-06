@@ -64,9 +64,9 @@ const AppProvider = ({ children }) => {
   const [title, setTitle] = useState("");
   console.log(title);
   const [imgActivities, setImgActivities] = useState("");
-  const [type, setType] = useState("Run");
+  const [type, setType] = useState("run");
   console.log(type);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
   console.log(date);
   const [startDuration, setStartDuration] = useState("00:00");
   console.log(startDuration);
@@ -103,6 +103,24 @@ const AppProvider = ({ children }) => {
     return minutes;
   };
   console.log(duration());
+
+  const initialState = {
+    title: "",
+    type: "run",
+    date: new Date().toISOString().substring(0, 10),
+    startDuration:"00:00",
+    endDuration:"00:00",
+    description:"",
+  }
+
+  const clearActivity = () => {
+    setTitle(initialState.title);
+    setType(initialState.type);
+    setDate(initialState.date);
+    setStartDuration(initialState.startDuration);
+    setEndDuration(initialState.endDuration);
+    setDescription(initialState.description);
+  };
 
   const url = "http://localhost:8000";
 
@@ -189,6 +207,7 @@ const AppProvider = ({ children }) => {
         createActivity,
         updateActivity,
         deleteActivity,
+        clearActivity,
       }}
     >
       {children}
