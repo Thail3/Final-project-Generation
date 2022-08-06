@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import "./header.css";
 import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../../context/Context";
 
 function Header() {
+  const { clearActivity } = useGlobalContext();
   const location = useLocation();
+  const navigate = useNavigate();
   console.log(location);
+
+  const handleClick = () => {
+    clearActivity();
+    navigate("/form");
+  };
 
   return (
     <section className="header">
@@ -24,9 +33,7 @@ function Header() {
             </div>
           </div>
           <div className="header-add">
-            <Link to="/form">
-              <button>ADD ACTIVITIES</button>
-            </Link>
+            <button onClick={handleClick}>ADD ACTIVITIES</button>
           </div>
 
           <div className="header-activity-responsive">
@@ -41,9 +48,7 @@ function Header() {
             </div>
           </div>
           <div className="header-add-responsive">
-            <Link to="/form">
-              <button>ADD ACTIVITIES</button>
-            </Link>
+            <button onClick={handleClick}>ADD ACTIVITIES</button>
           </div>
         </>
       ) : (
