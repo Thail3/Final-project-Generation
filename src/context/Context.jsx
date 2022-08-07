@@ -139,11 +139,6 @@ const AppProvider = ({ children }) => {
     setDescription("");
   };
 
-  //?! Get ID of Activity
-
-  const getIdActivity = activities.map((activity) => activity._id);
-  console.log("getIdActivity", getIdActivity);
-
   //?!Pagination --------------------------------------------
 
   const indexOfLastPost = pageNumber * pageSize;
@@ -233,7 +228,8 @@ const AppProvider = ({ children }) => {
         type: type,
         data: date,
         duration: duration(),
-        status: statusActivity,
+        //? status have to fix when update
+        // status: statusActivity,
         desc: description,
       });
       newActivity[idx] = res.data;
@@ -290,7 +286,6 @@ const AppProvider = ({ children }) => {
         setActivityData,
         startDateTime,
         clearActivity,
-        getIdActivity,
         totalPosts,
         nextPage,
         previousPage,

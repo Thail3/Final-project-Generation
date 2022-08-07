@@ -19,7 +19,7 @@ function CardComponent({
   const { deleteActivity, statusActivity, setStatusActivity, setActivityData } =
     useGlobalContext();
 
-  console.log(status);
+  // console.log(status);
 
   const navigate = useNavigate();
 

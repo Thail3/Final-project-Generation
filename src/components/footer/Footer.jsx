@@ -13,7 +13,7 @@ function Footer() {
 
   for (let i = 1; i <= Math.ceil(totalPosts / pageSize); i++) {
     pageNumbers.push(i);
-    console.log("pageNumbers footer", pageNumbers);
+    // console.log("pageNumbers footer", pageNumbers);
   }
 
   return (
@@ -30,7 +30,7 @@ function Footer() {
         </div>
 
         {pageNumbers.map((number) => {
-          console.log(number);
+          // console.log(number);
           return (
             <div className="footer-numberPage" key={number}>
               <button onClick={() => handlePage(number)}>{number}</button>

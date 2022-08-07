@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./formDetail.css";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../context/Context";
 
 function FormDetail() {
@@ -21,11 +21,13 @@ function FormDetail() {
     setDescription,
     createActivity,
     updateActivity,
-    getIdActivity,
   } = useGlobalContext();
 
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
+  console.log("FormDetail location", location.pathname);
+  console.log("FormDetail useParams", id);
 
   const changeImg = () => {
     if (setType() === "Running") {
@@ -47,13 +49,13 @@ function FormDetail() {
 
   const handleEditForm = (e) => {
     e.preventDefault();
-    updateActivity(getIdActivity);
+    updateActivity(id);
     navigate("/");
   };
 
   return (
     <section>
-      {location.pathname === `/form/${getIdActivity}` ? (
+      {location.pathname === `/form/${id}` ? (
         <form className="form-component" onSubmit={handleEditForm}>
           <div className="form-title">
             <label htmlFor="name">Title</label>
