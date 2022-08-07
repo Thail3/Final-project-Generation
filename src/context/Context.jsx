@@ -8,7 +8,7 @@ const AppProvider = ({ children }) => {
   const [title, setTitle] = useState("");
   console.log(title);
   const [imgActivities, setImgActivities] = useState("");
-  const [type, setType] = useState("Run");
+  const [type, setType] = useState("");
   console.log(type);
   const [date, setDate] = useState("");
   console.log(date);
@@ -23,7 +23,11 @@ const AppProvider = ({ children }) => {
   const [loging, setLoging] = useState("");
   const [logout, setLogout] = useState("");
   const [userName, setUserName] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize] = useState(6);
   console.log("start Duration", startDuration);
+
+  //?! Set Form when Edit
 
   const setActivityData = (
     newTitle,
@@ -80,6 +84,8 @@ const AppProvider = ({ children }) => {
     setDescription(newDesc);
   };
 
+  //?! Date convert for sent to Backend
+
   const startDateTime = () => {
     const utcDate = new Date(
       +date.substring(0, 4),
@@ -95,6 +101,8 @@ const AppProvider = ({ children }) => {
 
     return utcDate;
   };
+
+  //?! Calculate Duration in Form
 
   const duration = () => {
     const start = new Date(
@@ -120,6 +128,8 @@ const AppProvider = ({ children }) => {
   };
   console.log(duration());
 
+  //?! Clear form
+
   const clearActivity = () => {
     setTitle("");
     setType("");
@@ -128,6 +138,49 @@ const AppProvider = ({ children }) => {
     setEndDuration("");
     setDescription("");
   };
+
+  //?! Get ID of Activity
+
+  const getIdActivity = activities.map((activity) => activity._id);
+  console.log("getIdActivity", getIdActivity);
+
+  //?!Pagination --------------------------------------------
+
+  const indexOfLastPost = pageNumber * pageSize;
+  const indexOfFirstPost = indexOfLastPost - pageSize;
+  const currentPage = activities.slice(indexOfFirstPost, indexOfLastPost);
+  console.log("currentPage context", currentPage);
+
+  const totalPosts = activities.length;
+  console.log("totalPosts", totalPosts); // totalPosts = 6
+
+  const nextPage = () => {
+    setPageNumber((oldPage) => {
+      let nextPage = oldPage + 1;
+      let maxPage = Math.ceil(totalPosts / pageSize);
+
+      if (nextPage > maxPage) {
+        nextPage = maxPage;
+      }
+      return nextPage;
+    });
+  };
+
+  const previousPage = () => {
+    setPageNumber((oldPage) => {
+      let prevPage = oldPage - 1;
+      if (prevPage <= 0) {
+        prevPage = 1;
+      }
+      return prevPage;
+    });
+  };
+
+  const handlePage = (numberOfPage) => {
+    setPageNumber(numberOfPage);
+  };
+
+  //?! Fetch Data Activity ------------------------------------------
 
   const url = "http://localhost:8000";
 
@@ -180,10 +233,12 @@ const AppProvider = ({ children }) => {
         type: type,
         data: date,
         duration: duration(),
+        status: statusActivity,
         desc: description,
       });
       newActivity[idx] = res.data;
       setActivities(newActivity);
+      fetchData();
     } catch (e) {
       console.log(e);
     }
@@ -226,12 +281,21 @@ const AppProvider = ({ children }) => {
         setLogout,
         userName,
         setUserName,
+        pageNumber,
+        setPageNumber,
+        pageSize,
         createActivity,
         updateActivity,
         deleteActivity,
         setActivityData,
         startDateTime,
         clearActivity,
+        getIdActivity,
+        totalPosts,
+        nextPage,
+        previousPage,
+        handlePage,
+        currentPage,
       }}
     >
       {children}

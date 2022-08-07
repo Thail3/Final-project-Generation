@@ -4,10 +4,11 @@ import CardComponent from "../CardComponent/CardComponent";
 import { useGlobalContext } from "../../context/Context";
 
 function Container(props) {
-  const { activities } = useGlobalContext();
+  const { currentPage, activities } = useGlobalContext();
+  console.log(currentPage);
   console.log(activities);
 
-  const cards = activities.map((activity, index) => (
+  const cards = currentPage.map((activity, index) => (
     <CardComponent
       key={index}
       activity={activity}
