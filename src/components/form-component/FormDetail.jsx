@@ -24,6 +24,7 @@ function FormDetail() {
     setDescription,
     createActivity,
     updateActivity,
+    clearActivity,
   } = useGlobalContext();
   const initialValues = {
     title: title || "",
@@ -88,13 +89,14 @@ function FormDetail() {
     console.log("use effect formErrors : ", formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log("use effect form value in if : ", formValues);
+      //TODO: fill default value to empty string
       if(editMode()) {
         updateActivity(id);
       } else {
         createActivity();
       }
-      navigate("/");
       clearFormValues();
+      navigate("/");
     }
     console.log("use effect form value : ", formValues);
   }, [formErrors]);
@@ -165,6 +167,11 @@ function FormDetail() {
               onChange={handleTitleChange}
             />
           </div>
+          {formErrors.title ? (
+          <div className="text-danger m-2">{formErrors.title}</div>
+        ) : (
+          ""
+        )}
 
           {setType ? (
             <div className="form-img">
@@ -268,10 +275,15 @@ function FormDetail() {
               type="text"
               name="title"
               pattern=".{,120}"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={formValues.title}
+              onChange={handleTitleChange}
             />
           </div>
+          {formErrors.title ? (
+          <div className="text-danger m-2">{formErrors.title}</div>
+        ) : (
+          ""
+        )}
 
           {setType ? (
             <div className="form-img">
