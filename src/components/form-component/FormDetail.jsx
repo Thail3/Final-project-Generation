@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import "./formDetail.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../context/Context";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
@@ -23,16 +23,16 @@ function FormDetail() {
     description,
     setDescription,
     createActivity,
-    clearActivity,
+    updateActivity,
   } = useGlobalContext();
   const initialValues = {
     title: title || "",
-    date: date || new Date().toISOString().substring(0, 10),
-    type: type || "run",
-    startDuration: startDuration || "",
-    endDuration: endDuration || "",
+    date: date == "" ? new Date().toISOString().substring(0, 10) : date,
+    type: type == "" ? "run" : type,
+    startDuration: startDuration == "" ? "00:00" : startDuration,
+    endDuration: endDuration == "" ? "00:00" : endDuration,
     description: description || "",
-    imgActivities: imgActivities || "",
+    imgActivities: imgActivities,
   };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -44,6 +44,10 @@ function FormDetail() {
   };
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = useParams();
+  console.log("FormDetail location", location.pathname);
+  console.log("FormDetail useParams", id);
 
   const changeImg = () => {
     if (setType() === "Running") {
@@ -61,18 +65,21 @@ function FormDetail() {
     e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmit(true);
-    console.log("formValues date :", formValues.date);
   };
 
-  const handleSubmit = (e) => {
+  const handleEditForm = (e) => {
     e.preventDefault();
     setFormErrors(validate(formValues));
     setIsSubmit(true);
   };
 
   const clearFormValues = () => {
-    clearActivity()
-    setFormValues(initialValues)
+    clearActivity();
+    setFormValues(initialValues);
+  };
+
+  const editMode = () => {
+    return id ? true : false
   }
 
   useEffect(() => {
@@ -81,12 +88,15 @@ function FormDetail() {
     console.log("use effect formErrors : ", formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log("use effect form value in if : ", formValues);
-      createActivity();
-      clearFormValues();
+      if(editMode()) {
+        updateActivity(id);
+      } else {
+        createActivity();
+      }
       navigate("/");
+      clearFormValues();
     }
     console.log("use effect form value : ", formValues);
-
   }, [formErrors]);
 
   const validate = (values) => {
@@ -143,115 +153,221 @@ function FormDetail() {
 
   return (
     <section>
-      <Form className="form-component" noValidate onSubmit={handleSubmitForm}>
-        <div className="form-title">
-          <label htmlFor="name">Title</label>
-          <input
-            type="text"
-            name="title"
-            pattern=".{,120}"
-            onChange={handleTitleChange}
-            value={formValues.title}
-          />
-        </div>
-        {formErrors.title ? (
-          <div className="text-danger m-2">{formErrors.title}</div>
-        ) : (
-          ""
-        )}
-
-        {setType ? (
-          <div className="form-img">
-            <img
-              src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
-              alt=""
-              value={formValues.imgActivities}
-              onChange={changeImg}
+      {location.pathname === `/form/${id}` ? (
+        <Form className="form-component" onSubmit={handleEditForm}>
+          <div className="form-title">
+            <label htmlFor="name">Title</label>
+            <input
+              type="text"
+              name="title"
+              pattern=".{,120}"
+              value={formValues.title}
+              onChange={handleTitleChange}
             />
           </div>
-        ) : null}
 
-        <div className="form-type-select">
-          <p>Type</p>
-          <select
-            name="type"
-            onChange={handleTypeChange}
-            value={formValues.type}
-          >
-            <option value="run">Run</option>
-            <option value="swim">Swim</option>
-            <option value="fly">Fly</option>
-          </select>
-        </div>
-        {formErrors.type ? (
-          <div className="text-danger m-2">{formErrors.type}</div>
-        ) : (
-          ""
-        )}
+          {setType ? (
+            <div className="form-img">
+              <img
+                src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
+                alt=""
+                value={formValues.imgActivities}
+                onChange={changeImg}
+              />
+            </div>
+          ) : null}
 
-        <div className="form-date-time">
-          <p>Date / Time</p>
-          <input
-            type="date"
-            name="date"
-            onChange={handleDateChange}
-            value={formValues.date}
-          />
-        </div>
-        {formErrors.date ? (
-          <div className="text-danger m-2">{formErrors.date}</div>
-        ) : (
-          ""
-        )}
+          <div className="form-type-select">
+            <p>Type</p>
+            <select
+              name="type"
+              onChange={handleTypeChange}
+              value={formValues.type}
+            >
+              <option value="">select Type of Activities</option>
+              <option value="run">Run</option>
+              <option value="swim">Swim</option>
+              <option value="fly">Fly</option>
+            </select>
+          </div>
+          {formErrors.type ? (
+            <div className="text-danger m-2">{formErrors.type}</div>
+          ) : (
+            ""
+          )}
 
-        <div className="form-duration">
-          <p>Duration</p>
-          <span>Start</span>
-          <input
-            type="time"
-            name="startDuration"
-            onChange={handleStartDuration}
-            value={formValues.startDuration}
-          />
-          {formErrors.startDuration ? (
-          <div className="text-danger m-2">{formErrors.startDuration}</div>
-        ) : (
-          ""
-        )}
+          <div className="form-date-time">
+            <p>Date / Time</p>
+            <input
+              type="date"
+              name="date"
+              onChange={handleDateChange}
+              value={formValues.date}
+            />
+          </div>
+          {formErrors.date ? (
+            <div className="text-danger m-2">{formErrors.date}</div>
+          ) : (
+            ""
+          )}
 
-          <span>End</span>
-          <input
-            type="time"
-            name="endDuration"
-            onChange={handleEndDuration}
-            value={formValues.endDuration}
-          />
-          {formErrors.endDuration ? (
-          <div className="text-danger m-2">{formErrors.endDuration}</div>
-        ) : (
-          ""
-        )}
+          <div className="form-duration">
+            <p>Duration</p>
+            <span>Start</span>
+            <input
+              type="time"
+              name="startDuration"
+              onChange={handleStartDuration}
+              value={formValues.startDuration}
+            />
+            {formErrors.startDuration ? (
+              <div className="text-danger m-2">{formErrors.startDuration}</div>
+            ) : (
+              ""
+            )}
 
-        </div>
+            <span>End</span>
+            <input
+              type="time"
+              name="endDuration"
+              onChange={handleEndDuration}
+              value={formValues.endDuration}
+            />
+            {formErrors.endDuration ? (
+              <div className="text-danger m-2">{formErrors.endDuration}</div>
+            ) : (
+              ""
+            )}
 
-        <div className="form-desc">
-          <p>Description</p>
-          <input
-            type="text"
-            name="description"
-            pattern=".{,120}"
-            onChange={handleDescription}
-            value={formValues.description}
-          />
-        </div>
-        {formErrors.description ? (
-          <div className="text-danger m-2">{formErrors.description}</div>
-        ) : (
-          ""
-        )}
+            {/* Change type to be Number and delete start */}
+          </div>
 
-        <button type="submit">ADD ACTIVITIES</button>
-      </Form>
+          <div className="form-desc">
+            <p>Description</p>
+            <input
+              type="text"
+              name="description"
+              pattern=".{,120}"
+              onChange={handleDescription}
+              value={formValues.description}
+            />
+          </div>
+          {formErrors.description ? (
+            <div className="text-danger m-2">{formErrors.description}</div>
+          ) : (
+            ""
+          )}
+
+          <button type="submit">EDIT ACTIVITIES</button>
+        </Form>
+      ) : (
+        <Form className="form-component" onSubmit={handleSubmitForm}>
+          <div className="form-title">
+            <label htmlFor="name">Title</label>
+            <input
+              type="text"
+              name="title"
+              pattern=".{,120}"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+
+          {setType ? (
+            <div className="form-img">
+              <img
+                src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
+                alt=""
+                value={formValues.imgActivities}
+                onChange={changeImg}
+              />
+            </div>
+          ) : null}
+
+          <div className="form-type-select">
+            <p>Type</p>
+            <select
+              name="type"
+              onChange={handleTypeChange}
+              value={formValues.type}
+            >
+              <option value="">select Type of Activities</option>
+              <option value="run">Run</option>
+              <option value="swim">Swim</option>
+              <option value="fly">Fly</option>
+            </select>
+          </div>
+          {formErrors.type ? (
+            <div className="text-danger m-2">{formErrors.type}</div>
+          ) : (
+            ""
+          )}
+
+          <div className="form-date-time">
+            <p>Date / Time</p>
+            <input
+              type="date"
+              name="date"
+              onChange={handleDateChange}
+              value={formValues.date}
+            />
+          </div>
+          {formErrors.date ? (
+            <div className="text-danger m-2">{formErrors.date}</div>
+          ) : (
+            ""
+          )}
+
+          <div className="form-duration">
+            <p>Duration</p>
+            <span>Start</span>
+            <input
+              type="time"
+              name="startDuration"
+              onChange={handleStartDuration}
+              value={formValues.startDuration}
+            />
+            {formErrors.startDuration ? (
+              <div className="text-danger m-2">{formErrors.startDuration}</div>
+            ) : (
+              ""
+            )}
+
+            <span>End</span>
+            <input
+              type="time"
+              name="endDuration"
+              onChange={handleEndDuration}
+              value={formValues.endDuration}
+            />
+            {formErrors.endDuration ? (
+              <div className="text-danger m-2">{formErrors.endDuration}</div>
+            ) : (
+              ""
+            )}
+
+            {/* Change type to be Number and delete start */}
+          </div>
+
+          <div className="form-desc">
+            <p>Description</p>
+            <input
+              type="text"
+              name="description"
+              pattern=".{,120}"
+              onChange={handleDescription}
+              value={formValues.description}
+            />
+          </div>
+          {formErrors.description ? (
+            <div className="text-danger m-2">{formErrors.description}</div>
+          ) : (
+            ""
+          )}
+
+          <button type="submit">ADD ACTIVITIES</button>
+        </Form>
+      )}
     </section>
   );
 }

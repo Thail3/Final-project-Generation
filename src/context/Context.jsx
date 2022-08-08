@@ -4,81 +4,105 @@ import React, { useState, useContext, useEffect } from "react";
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
-  const [activities, setActivities] = useState([
-    // {
-    //   id: 0,
-    //   name: "Title Name 1",
-    //   date: "28/07/2022",
-    //   duration: "3 hours",
-    //   type: "Run",
-    //   description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    //   status: "status 1",
-    // },
-    // {
-    //   id: 1,
-    //   name: "Title Name 2",
-    //   date: "27/07/2022",
-    //   duration: "2 hours",
-    //   type: "Bicycle ride",
-    //   description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    //   status: "status 1",
-    // },
-    // {
-    //   id: 2,
-    //   name: "Title Name 3",
-    //   date: "29/07/2022",
-    //   duration: "5 hours",
-    //   type: "Swim",
-    //   description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    //   status: "status 2",
-    // },
-    // {
-    //   id: 3,
-    //   name: "Title Name 4",
-    //   date: "30/07/2022",
-    //   duration: "4 hours",
-    //   type: "Walk",
-    //   description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    //   status: "status 3",
-    // },
-    // {
-    //   id: 4,
-    //   name: "Title Name 5",
-    //   date: "31/07/2022",
-    //   duration: "6 hours",
-    //   type: "Hike",
-    //   description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    //   status: "status 4",
-    // },
-    // {
-    //   id: 5,
-    //   name: "Title Name 6",
-    //   date: "01/08/2022",
-    //   duration: "2 hours",
-    //   type: "Run",
-    //   description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    //   status: "status 5",
-    // },
-  ]);
-
+  const [activities, setActivities] = useState([]);
   const [title, setTitle] = useState("");
   console.log(title);
   const [imgActivities, setImgActivities] = useState("");
-  const [type, setType] = useState("run");
+  const [type, setType] = useState("");
   console.log(type);
-  const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
+  const [date, setDate] = useState("");
   console.log(date);
-  const [startDuration, setStartDuration] = useState("00:00");
+  const [startDuration, setStartDuration] = useState("");
   console.log(startDuration);
-  const [endDuration, setEndDuration] = useState("00:00");
+  const [endDuration, setEndDuration] = useState("");
   console.log(endDuration);
   const [description, setDescription] = useState("");
   console.log(description);
-  const [status, setStatus] = useState(false);
+  const [statusActivity, setStatusActivity] = useState(new Map());
   const [loading, setLoading] = useState(false);
   const [loging, setLoging] = useState("");
   const [logout, setLogout] = useState("");
   const [userName, setUserName] = useState("");
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize] = useState(6);
+  console.log("start Duration", startDuration);
+
+  //?! Set Form when Edit
+
+  const setActivityData = (
+    newTitle,
+    newType,
+    newDate,
+    newDuration,
+    newDesc
+  ) => {
+    setTitle(newTitle);
+    setType(newType);
+
+    const start = new Date(
+      Date.UTC(
+        +newDate.substring(0, 4),
+        +newDate.substring(5, 7) - 1,
+        +newDate.substring(8, 10),
+        +newDate.substring(11, 13),
+        +newDate.substring(14, 16),
+        0,
+        0
+      )
+    );
+
+    let date = start.toLocaleString("fr-CA", {
+      // timeZone: "Asia/Bangkok",
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    });
+
+    const formattedDate = date;
+    const formattedTime = start
+      .toLocaleString("en-GB")
+      // .toLocaleString("en-GB", { timeZone: "Asia/Bangkok" })
+      .substring(12, 17);
+    console.log("formattedDate", formattedDate);
+    setDate(formattedDate);
+    setStartDuration(formattedTime);
+
+    let startTime = start.getTime();
+    startTime += newDuration * 60 * 1000;
+    let endDateTime = new Date(startTime);
+
+    let hh = endDateTime.getHours();
+    if (hh < 10) {
+      hh = "0" + hh;
+    }
+    let mm = endDateTime.getMinutes();
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    setEndDuration(hh + ":" + mm);
+    setDescription(newDesc);
+  };
+
+  //?! Date convert for sent to Backend
+
+  const startDateTime = () => {
+    const utcDate = new Date(
+      +date.substring(0, 4),
+      +date.substring(5, 7) - 1,
+      +date.substring(8, 10),
+      +startDuration.substring(0, 2),
+      +startDuration.substring(3, 5),
+      0,
+      0
+    );
+
+    console.log("utcDate", utcDate);
+
+    return utcDate;
+  };
+
+  //?! Calculate Duration in Form
 
   const duration = () => {
     const start = new Date(
@@ -104,23 +128,54 @@ const AppProvider = ({ children }) => {
   };
   console.log(duration());
 
-  const initialState = {
-    title: "",
-    type: "run",
-    date: new Date().toISOString().substring(0, 10),
-    startDuration:"00:00",
-    endDuration:"00:00",
-    description:"",
-  }
+  //?! Clear form
 
   const clearActivity = () => {
-    setTitle(initialState.title);
-    setType(initialState.type);
-    setDate(initialState.date);
-    setStartDuration(initialState.startDuration);
-    setEndDuration(initialState.endDuration);
-    setDescription(initialState.description);
+    setTitle("");
+    setType("");
+    setDate("");
+    setStartDuration("");
+    setEndDuration("");
+    setDescription("");
   };
+
+  //?!Pagination --------------------------------------------
+
+  const indexOfLastPost = pageNumber * pageSize;
+  const indexOfFirstPost = indexOfLastPost - pageSize;
+  const currentPage = activities.slice(indexOfFirstPost, indexOfLastPost);
+  console.log("currentPage context", currentPage);
+
+  const totalPosts = activities.length;
+  console.log("totalPosts", totalPosts); // totalPosts = 6
+
+  const nextPage = () => {
+    setPageNumber((oldPage) => {
+      let nextPage = oldPage + 1;
+      let maxPage = Math.ceil(totalPosts / pageSize);
+
+      if (nextPage > maxPage) {
+        nextPage = maxPage;
+      }
+      return nextPage;
+    });
+  };
+
+  const previousPage = () => {
+    setPageNumber((oldPage) => {
+      let prevPage = oldPage - 1;
+      if (prevPage <= 0) {
+        prevPage = 1;
+      }
+      return prevPage;
+    });
+  };
+
+  const handlePage = (numberOfPage) => {
+    setPageNumber(numberOfPage);
+  };
+
+  //?! Fetch Data Activity ------------------------------------------
 
   const url = "http://localhost:8000";
 
@@ -130,6 +185,15 @@ const AppProvider = ({ children }) => {
       res.data.sort((a, b) => {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
+
+      let mapStatusActivity = new Map();
+      for (let i = 0; i < res.data.length; i++) {
+        let id = res.data[i]._id;
+        console.log(id);
+        mapStatusActivity.set(id, false);
+      }
+
+      setStatusActivity(mapStatusActivity);
       setActivities(res.data);
     } catch (e) {
       console.log(e);
@@ -145,7 +209,7 @@ const AppProvider = ({ children }) => {
       await axios.post(`${url}/activity`, {
         title: title,
         type: type,
-        date: date,
+        date: startDateTime(),
         duration: duration(),
         desc: description,
       });
@@ -159,9 +223,18 @@ const AppProvider = ({ children }) => {
     try {
       const idx = activities.findIndex((activity) => activity._id === id);
       const newActivity = [...activities];
-      const res = await axios.patch(`${url}/activity/${id}`);
+      const res = await axios.patch(`${url}/activity/${id}`, {
+        title: title,
+        type: type,
+        data: date,
+        duration: duration(),
+        //? status have to fix when update
+        // status: statusActivity,
+        desc: description,
+      });
       newActivity[idx] = res.data;
       setActivities(newActivity);
+      fetchData();
     } catch (e) {
       console.log(e);
     }
@@ -196,18 +269,28 @@ const AppProvider = ({ children }) => {
         setEndDuration,
         description,
         setDescription,
-        status,
-        setStatus,
+        statusActivity,
+        setStatusActivity,
         loading,
         setLoading,
         logout,
         setLogout,
         userName,
         setUserName,
+        pageNumber,
+        setPageNumber,
+        pageSize,
         createActivity,
         updateActivity,
         deleteActivity,
+        setActivityData,
+        startDateTime,
         clearActivity,
+        totalPosts,
+        nextPage,
+        previousPage,
+        handlePage,
+        currentPage,
       }}
     >
       {children}
