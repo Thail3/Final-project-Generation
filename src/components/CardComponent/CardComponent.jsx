@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import { BiRun } from "react-icons/bi";
@@ -16,17 +16,14 @@ function CardComponent({
   description,
   status,
 }) {
-  const {
-    deleteActivity,
-    statusActivity,
-    setStatusActivity,
-    updateActivity,
-    setActivityData,
-  } = useGlobalContext();
+  const { deleteActivity, statusActivity, setStatusActivity, setActivityData } =
+    useGlobalContext();
 
-  console.log(statusActivity);
+  // console.log(status);
 
   const navigate = useNavigate();
+
+  useEffect(() => {}, []);
 
   const handleClickEdit = () => {
     setActivityData(title, type, date, duration, description);
@@ -40,8 +37,10 @@ function CardComponent({
 
   const handleclickChangeStatus = () => {
     console.log(id);
-    const oldStatus = statusActivity.get(id);
-    statusActivity.set(id, !oldStatus);
+    const oldStatus = !statusActivity.get(id);
+    console.log(oldStatus);
+
+    statusActivity.set(id, oldStatus);
     // setStatusActivity(new Map(JSON.parse(JSON.stringify([...statusActivity]))));
     setStatusActivity(new Map(statusActivity));
   };
