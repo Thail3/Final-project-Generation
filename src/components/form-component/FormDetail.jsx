@@ -69,12 +69,6 @@ function FormDetail() {
     setIsSubmit(true);
   };
 
-  const handleEditForm = (e) => {
-    e.preventDefault();
-    setFormErrors(validate(formValues));
-    setIsSubmit(true);
-  };
-
   const clearFormValues = () => {
     clearActivity();
     setFormValues(initialValues);
@@ -171,117 +165,6 @@ function FormDetail() {
 
   return (
     <section>
-      {location.pathname === `/form/${id}` ? (
-        <Form className="form-component" onSubmit={handleEditForm}>
-          <div className="form-title">
-            <label htmlFor="name">Title</label>
-            <input
-              type="text"
-              name="title"
-              value={formValues.title}
-              onChange={handleTitleChange}
-            />
-          </div>
-          {formErrors.title ? (
-            <div className="text-danger m-2">{formErrors.title}</div>
-          ) : (
-            ""
-          )}
-
-          {setType ? (
-            <div className="form-img">
-              <img
-                src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
-                alt=""
-                value={formValues.imgActivities}
-                onChange={changeImg}
-              />
-            </div>
-          ) : null}
-
-          <div className="form-type-select">
-            <p>Type</p>
-            <select
-              name="type"
-              onChange={handleTypeChange}
-              value={formValues.type}
-            >
-              <option value="">select Type of Activities</option>
-              <option value="run">Run</option>
-              <option value="swim">Swim</option>
-              <option value="fly">Fly</option>
-            </select>
-          </div>
-          {formErrors.type ? (
-            <div className="text-danger m-2">{formErrors.type}</div>
-          ) : (
-            ""
-          )}
-
-          <div className="form-date-time">
-            <p>Date / Time</p>
-            <input
-              type="date"
-              name="date"
-              onChange={handleDateChange}
-              value={formValues.date}
-            />
-          </div>
-          {formErrors.date ? (
-            <div className="text-danger m-2">{formErrors.date}</div>
-          ) : (
-            ""
-          )}
-
-          <div className="form-duration">
-            <p>Duration</p>
-            <span>Start</span>
-            <input
-              type="time"
-              name="startDuration"
-              onChange={handleStartDuration}
-              value={formValues.startDuration}
-            />
-            {formErrors.startDuration ? (
-              <div className="text-danger m-2">{formErrors.startDuration}</div>
-            ) : (
-              ""
-            )}
-
-            <span>End</span>
-            <input
-              type="time"
-              name="endDuration"
-              onChange={handleEndDuration}
-              value={formValues.endDuration}
-            />
-            {formErrors.endDuration ? (
-              <div className="text-danger m-2">{formErrors.endDuration}</div>
-            ) : (
-              ""
-            )}
-
-            {/* Change type to be Number and delete start */}
-          </div>
-
-          <div className="form-desc">
-            <p>Description</p>
-            <input
-              type="text"
-              name="description"
-              onChange={handleDescription}
-              value={formValues.description}
-            />
-          </div>
-          {formErrors.description ? (
-            <div className="text-danger m-2">{formErrors.description}</div>
-          ) : (
-            ""
-          )}
-
-          <button type="submit">EDIT ACTIVITIES</button>
-        </Form>
-      ) : (
         <Form className="form-component" onSubmit={handleSubmitForm}>
           <div className="form-title">
             <label htmlFor="name">Title</label>
@@ -389,9 +272,12 @@ function FormDetail() {
             ""
           )}
 
-          <button type="submit">ADD ACTIVITIES</button>
+          <button type="submit">
+            {location.pathname === `/form/${id}`
+              ? "EDIT ACTIVITIES"
+              : "ADD ACTIVITIES"}
+          </button>
         </Form>
-      )}
     </section>
   );
 }
