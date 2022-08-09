@@ -9,7 +9,7 @@ import "./home.scss";
 function Home() {
   return (
     <div className="home-page">
-      <div>
+      <div style={{zIndex: "1"}}>
         <div className="stars">
           <div className="star"></div>
           <div className="star"></div>
@@ -67,7 +67,7 @@ function Home() {
         <Container />
       </div>
 
-      <div>
+      <div style={{zIndex: "2"}}>
         <Footer />
       </div>
     </div>
