@@ -26,14 +26,15 @@ function FormDetail() {
     updateActivity,
     clearActivity,
   } = useGlobalContext();
+
   const initialValues = {
     title: title || "",
     date: date == "" ? new Date().toISOString().substring(0, 10) : date,
-    type: type == "" ? "run" : type,
+    type: type == "" ? "" : type,
     startDuration: startDuration == "" ? "00:00" : startDuration,
     endDuration: endDuration == "" ? "00:00" : endDuration,
     description: description || "",
-    imgActivities: imgActivities,
+    imgActivities: imgActivities || "",
   };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -80,8 +81,22 @@ function FormDetail() {
   };
 
   const editMode = () => {
-    return id ? true : false
-  }
+    return id ? true : false;
+  };
+
+  const setDefaultValues = () => {
+    setTitle(title == "" ? formValues.title : title);
+    setDate(date == "" ? formValues.date : date);
+    setType(type == "" ? formValues.type : type);
+    setStartDuration(
+      startDuration == "" ? formValues.startDuration : startDuration
+    );
+    setEndDuration(endDuration == "" ? formValues.endDuration : endDuration);
+    setDescription(description == "" ? formValues.description : description);
+    setImgActivities(
+      imgActivities == "" ? formValues.imgActivities : imgActivities
+    );
+  };
 
   useEffect(() => {
     console.log("date eff :", date);
@@ -89,8 +104,9 @@ function FormDetail() {
     console.log("use effect formErrors : ", formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log("use effect form value in if : ", formValues);
-      //TODO: fill default value to empty string
-      if(editMode()) {
+      //set default value to empty string if no change
+      setDefaultValues();
+      if (editMode()) {
         updateActivity(id);
       } else {
         createActivity();
@@ -162,16 +178,15 @@ function FormDetail() {
             <input
               type="text"
               name="title"
-              pattern=".{,120}"
               value={formValues.title}
               onChange={handleTitleChange}
             />
           </div>
           {formErrors.title ? (
-          <div className="text-danger m-2">{formErrors.title}</div>
-        ) : (
-          ""
-        )}
+            <div className="text-danger m-2">{formErrors.title}</div>
+          ) : (
+            ""
+          )}
 
           {setType ? (
             <div className="form-img">
@@ -254,7 +269,6 @@ function FormDetail() {
             <input
               type="text"
               name="description"
-              pattern=".{,120}"
               onChange={handleDescription}
               value={formValues.description}
             />
@@ -274,16 +288,15 @@ function FormDetail() {
             <input
               type="text"
               name="title"
-              pattern=".{,120}"
               value={formValues.title}
               onChange={handleTitleChange}
             />
           </div>
           {formErrors.title ? (
-          <div className="text-danger m-2">{formErrors.title}</div>
-        ) : (
-          ""
-        )}
+            <div className="text-danger m-2">{formErrors.title}</div>
+          ) : (
+            ""
+          )}
 
           {setType ? (
             <div className="form-img">
@@ -366,7 +379,6 @@ function FormDetail() {
             <input
               type="text"
               name="description"
-              pattern=".{,120}"
               onChange={handleDescription}
               value={formValues.description}
             />
