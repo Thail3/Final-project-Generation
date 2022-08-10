@@ -144,7 +144,7 @@ const AppProvider = ({ children }) => {
   const indexOfLastPost = pageNumber * pageSize;
   const indexOfFirstPost = indexOfLastPost - pageSize;
   const currentPage = activities.slice(indexOfFirstPost, indexOfLastPost);
-  console.log("currentPage context", currentPage);
+  console.log("currentPage context", currentPage.length);
 
   const totalPosts = activities.length;
   console.log("totalPosts", totalPosts); // totalPosts = 6
@@ -181,7 +181,9 @@ const AppProvider = ({ children }) => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(`${url}/activity`);
+      const res = await axios.get(
+        `${url}/activity?page=${pageNumber}&limit=${2000}`
+      );
       res.data.sort((a, b) => {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
@@ -189,7 +191,7 @@ const AppProvider = ({ children }) => {
       let mapStatusActivity = new Map();
       for (let i = 0; i < res.data.length; i++) {
         let id = res.data[i]._id;
-        console.log(id);
+        // console.log(id);
         mapStatusActivity.set(id, false);
       }
 
@@ -229,7 +231,7 @@ const AppProvider = ({ children }) => {
         data: date,
         duration: duration(),
         //? status have to fix when update
-        // status: statusActivity,
+        // status: statusActivity.get(id),
         desc: description,
       });
       newActivity[idx] = res.data;
