@@ -17,12 +17,12 @@ function CardComponent({
   status,
 }) {
   const {
-    updateActivity,
     deleteActivity,
     statusActivity,
     setStatusActivity,
     setActivityData,
     imgActivities,
+    updateStatusActivity,
   } = useGlobalContext();
 
   // console.log(status);
@@ -49,7 +49,7 @@ function CardComponent({
     statusActivity.set(id, oldStatus);
     // setStatusActivity(new Map(JSON.parse(JSON.stringify([...statusActivity]))));
     setStatusActivity(new Map(statusActivity));
-    // updateActivity(id);
+    updateStatusActivity(id);
   };
 
   return (
@@ -77,7 +77,7 @@ function CardComponent({
             <div className=" d-flex justify-content-between">
               <div className="card-font-size-body">
                 <b>Date: </b>
-                <span>{date.slice(0, 10)}</span>
+                <span>{date?.slice(0, 10)}</span>
               </div>
 
               <div className="card-font-size-body">
@@ -104,6 +104,7 @@ function CardComponent({
                     type="switch"
                     id={id}
                     label={status}
+                    checked={statusActivity.get(id)}
                     className="card-font-size-body"
                     onClick={handleclickChangeStatus}
                   />
@@ -125,6 +126,7 @@ function CardComponent({
                     // id="custom-switch"
                     id={id}
                     label={status}
+                    checked={statusActivity.get(id)}
                     className="card-font-size-body"
                     onClick={handleclickChangeStatus}
                   />
