@@ -5,6 +5,11 @@
   font-size: 1.45rem;
 }
 
+.card-component-imgactivity {
+  width: 40px;
+  height: 40px;
+}
+
 @media screen and (min-width: 390px) {
   .card-component {
     display: flex;
