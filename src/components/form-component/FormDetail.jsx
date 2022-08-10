@@ -29,16 +29,18 @@ function FormDetail() {
 
   const initialValues = {
     title: title || "",
-    date: date == "" ? new Date().toISOString().substring(0, 10) : date,
+    date: date,
     type: type == "" ? "" : type,
-    startDuration: startDuration == "" ? "00:00" : startDuration,
-    endDuration: endDuration == "" ? "00:00" : endDuration,
+    startDuration: startDuration == "" ? "" : startDuration,
+    endDuration: endDuration == "" ? "" : endDuration,
     description: description || "",
     imgActivities: imgActivities || "",
   };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  console.log("FormDetail formValues", formValues);
+  console.log("formErrors", formErrors);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -217,7 +219,6 @@ function FormDetail() {
           ) : (
             ""
           )}
-
           <div className="form-date-time">
             <p>Date / Time</p>
             <input
@@ -232,7 +233,6 @@ function FormDetail() {
           ) : (
             ""
           )}
-
           <div className="form-duration">
             <p>Duration</p>
             <span>Start</span>
@@ -263,7 +263,6 @@ function FormDetail() {
 
             {/* Change type to be Number and delete start */}
           </div>
-
           <div className="form-desc">
             <p>Description</p>
             <input
@@ -278,7 +277,6 @@ function FormDetail() {
           ) : (
             ""
           )}
-
           <button type="submit">EDIT ACTIVITIES</button>
         </Form>
       ) : (

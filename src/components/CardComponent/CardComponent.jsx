@@ -16,8 +16,13 @@ function CardComponent({
   description,
   status,
 }) {
-  const { deleteActivity, statusActivity, setStatusActivity, setActivityData } =
-    useGlobalContext();
+  const {
+    updateActivity,
+    deleteActivity,
+    statusActivity,
+    setStatusActivity,
+    setActivityData,
+  } = useGlobalContext();
 
   // console.log(status);
 
@@ -43,6 +48,7 @@ function CardComponent({
     statusActivity.set(id, oldStatus);
     // setStatusActivity(new Map(JSON.parse(JSON.stringify([...statusActivity]))));
     setStatusActivity(new Map(statusActivity));
+    // updateActivity(id);
   };
 
   return (
