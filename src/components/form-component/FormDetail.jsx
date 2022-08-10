@@ -53,15 +53,30 @@ function FormDetail() {
   console.log("FormDetail location", location.pathname);
   console.log("FormDetail useParams", id);
 
-  const changeImg = () => {
-    if (setType() === "Running") {
-      setImgActivities("");
-    } else if (setType() === "Cycling") {
-      setImgActivities("");
-    } else if (setType() === "Swimming") {
-      setImgActivities("");
-    } else if (setType() === "Walking") {
-      setImgActivities("");
+  const changeImg = (val) => {
+    if (val == "") {
+      setImgActivities("../../src/assets/fitness.png");
+    }
+    if (val == "runing") {
+      setImgActivities("../../src/assets/run.png");
+    }
+    if (val == "swiming") {
+      setImgActivities("../../src/assets/swimming.png");
+    }
+    if (val == "bike") {
+      setImgActivities("../../src/assets/bike.png");
+    }
+    if (val == "hiking") {
+      setImgActivities("../../src/assets/hiking.png");
+    }
+    if (val == "scuba-diving") {
+      setImgActivities("../../src/assets/scuba-diving.png");
+    }
+    if (val == "walking") {
+      setImgActivities("../../src/assets/walking.png");
+    }
+    if (val == "weight-lifting") {
+      setImgActivities("../../src/assets/weight-lifting.png");
     }
   };
 
@@ -150,6 +165,7 @@ function FormDetail() {
   };
 
   const handleTypeChange = (e) => {
+    changeImg(e.target.value);
     setType(e.target.value);
     handleChange(e);
   };
@@ -299,10 +315,8 @@ function FormDetail() {
           {setType ? (
             <div className="form-img">
               <img
-                src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
+                src={imgActivities}
                 alt=""
-                value={formValues.imgActivities}
-                onChange={changeImg}
               />
             </div>
           ) : null}
@@ -315,9 +329,13 @@ function FormDetail() {
               value={formValues.type}
             >
               <option value="">select Type of Activities</option>
-              <option value="run">Run</option>
-              <option value="swim">Swim</option>
-              <option value="fly">Fly</option>
+              <option value="runing">Runing</option>
+              <option value="swiming">Swiming</option>
+              <option value="bike">Bike</option>
+              <option value="hiking">hiking</option>
+              <option value="scuba-diving">scuba-diving</option>
+              <option value="walking">walking</option>
+              <option value="weight-lifting">weight-lifting</option>
             </select>
           </div>
           {formErrors.type ? (

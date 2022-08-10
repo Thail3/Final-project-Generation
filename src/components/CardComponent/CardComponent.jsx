@@ -21,6 +21,7 @@ function CardComponent({
     deleteActivity,
     statusActivity,
     setStatusActivity,
+    imgActivities,
     setActivityData,
   } = useGlobalContext();
 
@@ -62,6 +63,11 @@ function CardComponent({
           <div className="card-component-title d-flex justify-content-center">
             <div className="m-2">
               <BiRun className="card-font-size-header" />
+              <img
+                src="{imgActivities}"
+                alt=""
+                className="card-font-size-header"
+              />
             </div>
             <div className="m-2">
               <Card.Title>
