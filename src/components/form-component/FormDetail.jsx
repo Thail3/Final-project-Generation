@@ -12,10 +12,14 @@ import imgWalk from "../../assets/walking.png";
 import imgWeight from "../../assets/weight-lifting.png";
 import imgScuba from "../../assets/scuba-diving.png";
 import imgHike from "../../assets/hiking.png";
+import axios from "axios";
 console.log(imgRun);
 
 function FormDetail() {
   const {
+    activities,
+    setActivityData, // set state เรา
+    buildActivityData, // build object ของน้อง จากข้อมูลจาก db
     title,
     setTitle,
     imgActivities,
@@ -60,6 +64,32 @@ function FormDetail() {
   const { id } = useParams();
   console.log("FormDetail location", location.pathname);
   console.log("FormDetail useParams", id);
+
+  const url = "http://localhost:8000";
+
+  const getActivityById = async (acitvityId) => {
+    try {
+      const res = await axios.get(`${url}/activity/${acitvityId}`);
+      console.log("Context getActivityById", res.data);
+      return res.data;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const initialEditActivityPage = (activityData) => {
+    console.log("initialEditActivityPage activityData", activityData);
+    if (activityData) {
+      var activityData = buildActivityData(
+        activityData.title,
+        activityData.type,
+        activityData.date,
+        activityData.duration,
+        activityData.desc
+      );
+      setFormValues(activityData);
+    }
+  };
 
   const changeImg = (val) => {
     if (val === "run") {
@@ -123,6 +153,21 @@ function FormDetail() {
       //set default value to empty string if no change
       setDefaultValues();
       if (editMode()) {
+        // newTitle,
+        // newType,
+        // newDate,
+        // newDuration,
+        // newDesc
+
+        // เอาค่าใน form ไป set state เดิม 
+        setActivityData(
+          formValues.title,
+          formValues.type,
+          "2022-08-10T22:00", //TODO Homework
+          60,                 //TODO Homework
+          formValues.description
+        );
+
         updateActivity(id);
       } else {
         createActivity();
@@ -131,6 +176,13 @@ function FormDetail() {
       navigate("/");
     }
     console.log("use effect form value : ", formValues);
+
+    // fix refresh data missing
+    if (editMode()) {
+      getActivityById(id).then((activityData) => {
+        initialEditActivityPage(activityData);
+      });
+    }
   }, [formErrors]);
 
   const validate = (values) => {
