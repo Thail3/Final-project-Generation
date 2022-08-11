@@ -421,7 +421,9 @@ function FormDetail() {
               value={formValues.startDuration}
             />
             {formErrors.startDuration ? (
-              <div className="text-danger m-2">{formErrors.startDuration}</div>
+              <div className="text-danger m-2 text-center">
+                {formErrors.startDuration}
+              </div>
             ) : (
               ""
             )}
@@ -434,7 +436,9 @@ function FormDetail() {
               value={formValues.endDuration}
             />
             {formErrors.endDuration ? (
-              <div className="text-danger m-2">{formErrors.endDuration}</div>
+              <div className="text-danger m-2 text-center">
+                {formErrors.endDuration}
+              </div>
             ) : (
               ""
             )}
