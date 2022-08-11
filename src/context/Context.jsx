@@ -395,6 +395,7 @@ const AppProvider = ({ children }) => {
         fetchData,
         updateStatusActivity,
         buildActivityData,
+        url,
       }}
     >
       {children}

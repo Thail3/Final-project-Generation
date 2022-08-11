@@ -5,8 +5,12 @@ import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
+import { useGlobalContext } from "../../context/Context";
 
 function Register_Form() {
+  const { url } = useGlobalContext();
+
   const initialValues = { username: "", email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -28,8 +32,23 @@ function Register_Form() {
     console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log(formValues);
+      createUser();
     }
   }, [formErrors]);
+
+  const createUser = async () => {
+    console.log("user data : ", formValues);
+    console.log("url : ", url);
+    try {
+      await axios.post(`${url}/users`, {
+        username: formValues.username,
+        password: formValues.password,
+        email: formValues.email,
+      });
+    } catch (e) {
+      console.log("createUser errors : ", e);
+    }
+  };
 
   const validate = (values) => {
     const errors = {};
