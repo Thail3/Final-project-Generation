@@ -7,7 +7,7 @@ const AppProvider = ({ children }) => {
   const [activities, setActivities] = useState([]);
   const [title, setTitle] = useState("");
   console.log(title);
-  const [imgActivities, setImgActivities] = useState("");
+  const [imgActivities, setImgActivities] = useState(new Map());
   const [type, setType] = useState("");
   console.log(type);
   const [date, setDate] = useState("");
@@ -132,6 +132,7 @@ const AppProvider = ({ children }) => {
 
   const clearActivity = () => {
     setTitle("");
+    // setImgActivities("");
     setType("");
     setDate("");
     setStartDuration("");
@@ -184,6 +185,8 @@ const AppProvider = ({ children }) => {
       const res = await axios.get(
         `${url}/activity?page=${pageNumber}&limit=${2000}`
       );
+      console.log("Context fetchData", res.data);
+
       res.data.sort((a, b) => {
         return new Date(b.createdAt) - new Date(a.createdAt);
       });
@@ -293,6 +296,7 @@ const AppProvider = ({ children }) => {
         previousPage,
         handlePage,
         currentPage,
+        fetchData,
       }}
     >
       {children}

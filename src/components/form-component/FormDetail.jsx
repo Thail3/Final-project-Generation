@@ -5,6 +5,14 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../context/Context";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
+import imgRun from "../../assets/run.png";
+import imgBike from "../../assets/bike.png";
+import imgSwim from "../../assets/swimming.png";
+import imgWalk from "../../assets/walking.png";
+import imgWeight from "../../assets/weight-lifting.png";
+import imgScuba from "../../assets/scuba-diving.png";
+import imgHike from "../../assets/hiking.png";
+console.log(imgRun);
 
 function FormDetail() {
   const {
@@ -53,15 +61,21 @@ function FormDetail() {
   console.log("FormDetail location", location.pathname);
   console.log("FormDetail useParams", id);
 
-  const changeImg = () => {
-    if (setType() === "Running") {
-      setImgActivities("");
-    } else if (setType() === "Cycling") {
-      setImgActivities("");
-    } else if (setType() === "Swimming") {
-      setImgActivities("");
-    } else if (setType() === "Walking") {
-      setImgActivities("");
+  const changeImg = (val) => {
+    if (val === "run") {
+      setImgActivities(imgRun);
+    } else if (val === "bike") {
+      setImgActivities(imgBike);
+    } else if (val === "swim") {
+      setImgActivities(imgSwim);
+    } else if (val === "walk") {
+      setImgActivities(imgWalk);
+    } else if (val === "weight") {
+      setImgActivities(imgWeight);
+    } else if (val === "scuba") {
+      setImgActivities(imgScuba);
+    } else if (val === "hike") {
+      setImgActivities(imgHike);
     }
   };
 
@@ -151,6 +165,7 @@ function FormDetail() {
 
   const handleTypeChange = (e) => {
     setType(e.target.value);
+    changeImg(e.target.value);
     handleChange(e);
   };
   const handleDateChange = (e) => {
@@ -192,14 +207,11 @@ function FormDetail() {
 
           {setType ? (
             <div className="form-img">
-              <img
-                src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
-                alt=""
-                value={formValues.imgActivities}
-                onChange={changeImg}
-              />
+              <img src={imgActivities} alt="" />
             </div>
-          ) : null}
+          ) : (
+            ""
+          )}
 
           <div className="form-type-select">
             <p>Type</p>
@@ -211,9 +223,13 @@ function FormDetail() {
               <option value="">select Type of Activities</option>
               <option value="run">Run</option>
               <option value="swim">Swim</option>
-              <option value="fly">Fly</option>
+              <option value="bike">bike</option>
+              <option value="walk">walk</option>
+              <option value="hike">hike</option>
+              <option value="scuba">scuba</option>
             </select>
           </div>
+
           {formErrors.type ? (
             <div className="text-danger m-2">{formErrors.type}</div>
           ) : (
@@ -299,10 +315,9 @@ function FormDetail() {
           {setType ? (
             <div className="form-img">
               <img
-                src="https://res.cloudinary.com/dk7xxtqnj/image/upload/v1645509448/paj9bphpazesgwmj7dyc.jpg"
+                src={imgActivities}
                 alt=""
-                value={formValues.imgActivities}
-                onChange={changeImg}
+                // value={formValues.imgActivities}
               />
             </div>
           ) : null}
@@ -317,7 +332,10 @@ function FormDetail() {
               <option value="">select Type of Activities</option>
               <option value="run">Run</option>
               <option value="swim">Swim</option>
-              <option value="fly">Fly</option>
+              <option value="bike">bike</option>
+              <option value="walk">walk</option>
+              <option value="hike">hike</option>
+              <option value="scuba">scuba</option>
             </select>
           </div>
           {formErrors.type ? (
