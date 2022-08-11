@@ -1,10 +1,12 @@
 import axios from "axios";
+
 import React, { useState, useContext, useEffect } from "react";
 
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
   const [activities, setActivities] = useState([]);
+  // const [activityId, setActivityId] = useState("");
   const [title, setTitle] = useState("");
   console.log(title);
   const [imgActivities, setImgActivities] = useState(new Map());
@@ -59,6 +61,7 @@ const AppProvider = ({ children }) => {
     });
 
     const formattedDate = date;
+
     const formattedTime = start
       .toLocaleString("en-GB")
       // .toLocaleString("en-GB", { timeZone: "Asia/Bangkok" })
@@ -82,6 +85,65 @@ const AppProvider = ({ children }) => {
 
     setEndDuration(hh + ":" + mm);
     setDescription(newDesc);
+  };
+
+  const buildActivityData = (
+    newTitle,
+    newType,
+    newDate,
+    newDuration,
+    newDesc
+  ) => {
+    const start = new Date(
+      Date.UTC(
+        +newDate.substring(0, 4),
+        +newDate.substring(5, 7) - 1,
+        +newDate.substring(8, 10),
+        +newDate.substring(11, 13),
+        +newDate.substring(14, 16),
+        0,
+        0
+      )
+    );
+
+    let date = start.toLocaleString("fr-CA", {
+      // timeZone: "Asia/Bangkok",
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    });
+
+    const formattedDate = date;
+
+    const formattedTime = start
+      .toLocaleString("en-GB")
+      // .toLocaleString("en-GB", { timeZone: "Asia/Bangkok" })
+      .substring(12, 17);
+    console.log("formattedDate", formattedDate);
+
+    let startTime = start.getTime();
+    startTime += newDuration * 60 * 1000;
+    let endDateTime = new Date(startTime);
+
+    let hh = endDateTime.getHours();
+    if (hh < 10) {
+      hh = "0" + hh;
+    }
+    let mm = endDateTime.getMinutes();
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    let activityData = {
+      title: newTitle,
+      date: formattedDate,
+      type: newType,
+      startDuration: formattedTime,
+      endDuration: hh + ":" + mm,
+      description: newDesc,
+      imgActivities: "", //TODO: set image
+    };
+    return activityData;
   };
 
   //?! Date convert for sent to Backend
@@ -195,7 +257,7 @@ const AppProvider = ({ children }) => {
       for (let i = 0; i < res.data.length; i++) {
         let id = res.data[i]._id;
         // console.log(id);
-        mapStatusActivity.set(id, false);
+        mapStatusActivity.set(id, res.data[i].status);
       }
 
       setStatusActivity(mapStatusActivity);
@@ -228,15 +290,47 @@ const AppProvider = ({ children }) => {
     try {
       const idx = activities.findIndex((activity) => activity._id === id);
       const newActivity = [...activities];
-      const res = await axios.patch(`${url}/activity/${id}`, {
+      console.log("Context statusActivity", statusActivity.get(id));
+
+      let updateData = {
         title: title,
         type: type,
-        data: date,
+        date: date,
         duration: duration(),
         //? status have to fix when update
-        // status: statusActivity.get(id),
+        status: statusActivity.get(id),
         desc: description,
-      });
+      };
+      console.log("Context updateData", updateData);
+      const res = await axios.patch(`${url}/activity/${id}`, updateData);
+      newActivity[idx] = res.data;
+      setActivities(newActivity);
+      fetchData();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const updateStatusActivity = async (id) => {
+    try {
+      const idx = activities.findIndex((activity) => activity._id === id);
+      const newActivity = [...activities];
+      console.log("Context statusActivity", statusActivity.get(id));
+
+      let currentData = activities[idx];
+      console.log("updateStatusActivity", currentData);
+
+      let updateData = {
+        title: currentData.title,
+        type: currentData.type,
+        date: currentData.date,
+        duration: currentData.duration,
+        //? status have to fix when update
+        status: statusActivity.get(id),
+        desc: currentData.description,
+      };
+      console.log("Context updateData", updateData);
+      const res = await axios.patch(`${url}/activity/${id}`, updateData);
       newActivity[idx] = res.data;
       setActivities(newActivity);
       fetchData();
@@ -284,6 +378,8 @@ const AppProvider = ({ children }) => {
         setUserName,
         pageNumber,
         setPageNumber,
+        // activityId,
+        // setActivityId,
         pageSize,
         createActivity,
         updateActivity,
@@ -297,6 +393,8 @@ const AppProvider = ({ children }) => {
         handlePage,
         currentPage,
         fetchData,
+        updateStatusActivity,
+        buildActivityData,
       }}
     >
       {children}
