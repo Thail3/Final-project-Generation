@@ -1,6 +1,13 @@
 import axios from "axios";
+import imgRun from "../assets/run.png";
+import imgBike from "../assets/bike.png";
+import imgSwim from "../assets/swimming.png";
+import imgWalk from "../assets/walking.png";
+import imgWeight from "../assets/weight-lifting.png";
+import imgScuba from "../assets/scuba-diving.png";
+import imgHike from "../assets/hiking.png";
 
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useMemo } from "react";
 
 const AppContext = React.createContext();
 
@@ -9,7 +16,7 @@ const AppProvider = ({ children }) => {
   // const [activityId, setActivityId] = useState("");
   const [title, setTitle] = useState("");
   console.log(title);
-  const [imgActivities, setImgActivities] = useState(new Map());
+  // const [imgActivities, setImgActivities] = useState('');
   const [type, setType] = useState("");
   console.log(type);
   const [date, setDate] = useState("");
@@ -26,8 +33,10 @@ const AppProvider = ({ children }) => {
   const [logout, setLogout] = useState("");
   const [userName, setUserName] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize] = useState(6);
-  console.log("start Duration", startDuration);
+  const [pageSize, setPageSize] = useState(6);
+  const [totalActivities, setTotalActivities] = useState(0);
+
+  // console.log("start Duration", startDuration);
 
   //?! Set Form when Edit
 
@@ -188,7 +197,7 @@ const AppProvider = ({ children }) => {
     let minutes = Math.round((end.getTime() - start.getTime()) / 1000 / 60);
     return minutes;
   };
-  console.log(duration());
+  // console.log(duration());
 
   //?! Clear form
 
@@ -204,64 +213,62 @@ const AppProvider = ({ children }) => {
 
   //?!Pagination --------------------------------------------
 
-  const indexOfLastPost = pageNumber * pageSize;
-  const indexOfFirstPost = indexOfLastPost - pageSize;
-  const currentPage = activities.slice(indexOfFirstPost, indexOfLastPost);
-  console.log("currentPage context", currentPage.length);
+  const currentPageData = useMemo(() => {
+    return activities;
+  }, [activities]);
 
-  const totalPosts = activities.length;
-  console.log("totalPosts", totalPosts); // totalPosts = 6
-
-  const nextPage = () => {
-    setPageNumber((oldPage) => {
-      let nextPage = oldPage + 1;
-      let maxPage = Math.ceil(totalPosts / pageSize);
-
-      if (nextPage > maxPage) {
-        nextPage = maxPage;
-      }
-      return nextPage;
-    });
-  };
-
-  const previousPage = () => {
-    setPageNumber((oldPage) => {
-      let prevPage = oldPage - 1;
-      if (prevPage <= 0) {
-        prevPage = 1;
-      }
-      return prevPage;
-    });
-  };
-
-  const handlePage = (numberOfPage) => {
-    setPageNumber(numberOfPage);
-  };
+  console.log("currentPageData", currentPageData); //currentPageData
 
   //?! Fetch Data Activity ------------------------------------------
+
+  //? convert type to mapImageActivity
+  const typeToImageActivityPath = (val) => {
+    if (val === "run") {
+      return imgRun;
+    } else if (val === "bike") {
+      return imgBike;
+    } else if (val === "swim") {
+      return imgSwim;
+    } else if (val === "walk") {
+      return imgWalk;
+    } else if (val === "weight") {
+      return imgWeight;
+    } else if (val === "scuba") {
+      return imgScuba;
+    } else if (val === "hike") {
+      return imgHike;
+    }
+  };
 
   const url = "http://localhost:8000";
 
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        `${url}/activity?page=${pageNumber}&limit=${2000}`
+        `${url}/activity?page=${pageNumber}&limit=${pageSize}`
+        // `${url}/activity`
       );
       console.log("Context fetchData", res.data);
 
-      res.data.sort((a, b) => {
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      });
-
       let mapStatusActivity = new Map();
-      for (let i = 0; i < res.data.length; i++) {
-        let id = res.data[i]._id;
+
+      for (let i = 0; i < res.data.activities.length; i++) {
+        let id = res.data.activities[i]._id;
         // console.log(id);
-        mapStatusActivity.set(id, res.data[i].status);
+        mapStatusActivity.set(id, res.data.activities[i].status);
       }
 
+      // let mapImageActivity = new Map();
+      // for (let i = 0; i < res.data.length; i++) {
+      //   let id = res.data[i]._id;
+      //   mapImageActivity.set(id, typeToImageActivityPath(res.data[i].type));
+      // }
+
+      console.log("mapStatusActivity", mapStatusActivity);
       setStatusActivity(mapStatusActivity);
-      setActivities(res.data);
+      setActivities(res.data.activities);
+      setTotalActivities(res.data.totalActivities);
+      setPageSize(res.data.pageSize);
     } catch (e) {
       console.log(e);
     }
@@ -269,7 +276,7 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [pageNumber]);
 
   const createActivity = async () => {
     try {
@@ -325,7 +332,6 @@ const AppProvider = ({ children }) => {
         type: currentData.type,
         date: currentData.date,
         duration: currentData.duration,
-        //? status have to fix when update
         status: statusActivity.get(id),
         desc: currentData.description,
       };
@@ -358,8 +364,7 @@ const AppProvider = ({ children }) => {
         setType,
         title,
         setTitle,
-        imgActivities,
-        setImgActivities,
+
         date,
         setDate,
         startDuration,
@@ -387,14 +392,16 @@ const AppProvider = ({ children }) => {
         setActivityData,
         startDateTime,
         clearActivity,
-        totalPosts,
-        nextPage,
-        previousPage,
-        handlePage,
-        currentPage,
+        // nextPage,
+        // previousPage,
+        // handlePage,
+        // currentPage,
         fetchData,
         updateStatusActivity,
         buildActivityData,
+        currentPageData,
+        totalActivities,
+        typeToImageActivityPath,
       }}
     >
       {children}
