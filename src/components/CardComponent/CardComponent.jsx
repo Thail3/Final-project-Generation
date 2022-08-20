@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import "./CardComponent.css";
 import { useGlobalContext } from "../../context/Context";
 import { useNavigate } from "react-router-dom";
+import run from "../../assets/run.png";
 
 function CardComponent({
   id,
@@ -23,6 +24,7 @@ function CardComponent({
     setActivityData,
     imgActivities,
     updateStatusActivity,
+    typeToImageActivityPath,
   } = useGlobalContext();
 
   // console.log(status);
@@ -63,7 +65,11 @@ function CardComponent({
           <div className="card-component-title d-flex justify-content-center">
             <div className="m-2">
               {/* <BiRun className="card-font-size-header" /> */}
-              <img src={imgActivities} className="card-component-imgactivity" />
+              <img
+                // src={imgActivities.get(id)}
+                src={typeToImageActivityPath(type)}
+                className="card-component-imgactivity"
+              />
             </div>
             <div className="m-2">
               <Card.Title>
@@ -104,7 +110,7 @@ function CardComponent({
                     type="switch"
                     id={id}
                     label={status}
-                    checked={statusActivity.get(id)}
+                    defaultChecked={statusActivity.get(id)}
                     className="card-font-size-body"
                     onClick={handleclickChangeStatus}
                   />
@@ -126,7 +132,7 @@ function CardComponent({
                     // id="custom-switch"
                     id={id}
                     label={status}
-                    checked={statusActivity.get(id)}
+                    defaultChecked={statusActivity.get(id)}
                     className="card-font-size-body"
                     onClick={handleclickChangeStatus}
                   />

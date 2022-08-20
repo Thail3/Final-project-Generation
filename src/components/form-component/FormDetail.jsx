@@ -18,8 +18,8 @@ console.log(imgRun);
 function FormDetail() {
   const {
     activities,
-    setActivityData, // set state เรา
-    buildActivityData, // build object ของน้อง จากข้อมูลจาก db
+    setActivityData,
+    buildActivityData,
     title,
     setTitle,
     imgActivities,
@@ -37,6 +37,7 @@ function FormDetail() {
     createActivity,
     updateActivity,
     clearActivity,
+    typeToImageActivityPath,
   } = useGlobalContext();
 
   const initialValues = {
@@ -77,37 +78,39 @@ function FormDetail() {
     }
   };
 
-  const initialEditActivityPage = (activityData) => {
-    console.log("initialEditActivityPage activityData", activityData);
-    if (activityData) {
-      var activityData = buildActivityData(
-        activityData.title,
-        activityData.type,
-        activityData.date,
-        activityData.duration,
-        activityData.desc
+  //! เปลี่ยนชื่อ abc ให้เป้นตัวอื่นที่ไม่ซ้ำกัน
+  const initialEditActivityPage = (abc) => {
+    console.log("initialEditActivityPage activityData", abc);
+    if (abc) {
+      let activityData = buildActivityData(
+        abc.title,
+
+        abc.type,
+        abc.date,
+        abc.duration,
+        abc.desc
       );
       setFormValues(activityData);
     }
   };
 
-  const changeImg = (val) => {
-    if (val === "run") {
-      setImgActivities(imgRun);
-    } else if (val === "bike") {
-      setImgActivities(imgBike);
-    } else if (val === "swim") {
-      setImgActivities(imgSwim);
-    } else if (val === "walk") {
-      setImgActivities(imgWalk);
-    } else if (val === "weight") {
-      setImgActivities(imgWeight);
-    } else if (val === "scuba") {
-      setImgActivities(imgScuba);
-    } else if (val === "hike") {
-      setImgActivities(imgHike);
-    }
-  };
+  // const changeImg = (val) => {
+  //   if (val === "run") {
+  //     setImgActivities(imgRun);
+  //   } else if (val === "bike") {
+  //     setImgActivities(imgBike);
+  //   } else if (val === "swim") {
+  //     setImgActivities(imgSwim);
+  //   } else if (val === "walk") {
+  //     setImgActivities(imgWalk);
+  //   } else if (val === "weight") {
+  //     setImgActivities(imgWeight);
+  //   } else if (val === "scuba") {
+  //     setImgActivities(imgScuba);
+  //   } else if (val === "hike") {
+  //     setImgActivities(imgHike);
+  //   }
+  // };
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
@@ -139,9 +142,9 @@ function FormDetail() {
     );
     setEndDuration(endDuration == "" ? formValues.endDuration : endDuration);
     setDescription(description == "" ? formValues.description : description);
-    setImgActivities(
-      imgActivities == "" ? formValues.imgActivities : imgActivities
-    );
+    // setImgActivities(
+    //   // imgActivities == "" ? formValues.imgActivities : imgActivities
+    // );
   };
 
   useEffect(() => {
@@ -159,12 +162,12 @@ function FormDetail() {
         // newDuration,
         // newDesc
 
-        // เอาค่าใน form ไป set state เดิม 
+        // เอาค่าใน form ไป set state เดิม
         setActivityData(
           formValues.title,
           formValues.type,
-          "2022-08-10T22:00", //TODO Homework
-          60,                 //TODO Homework
+          formValues.date, //TODO Homework
+          formValues.description, //TODO Homework
           formValues.description
         );
 
@@ -178,9 +181,10 @@ function FormDetail() {
     console.log("use effect form value : ", formValues);
 
     // fix refresh data missing
+    //!เปลี่ยนชื่อ abc ให้เป้นตัวอื่นที่ไม่ซ้ำกัน
     if (editMode()) {
-      getActivityById(id).then((activityData) => {
-        initialEditActivityPage(activityData);
+      getActivityById(id).then((abc) => {
+        initialEditActivityPage(abc);
       });
     }
   }, [formErrors]);
@@ -217,7 +221,8 @@ function FormDetail() {
 
   const handleTypeChange = (e) => {
     setType(e.target.value);
-    changeImg(e.target.value);
+    // changeImg(e.target.value);
+    // typeToImageActivityPath(e.target.value);
     handleChange(e);
   };
   const handleDateChange = (e) => {
@@ -259,7 +264,7 @@ function FormDetail() {
 
           {setType ? (
             <div className="form-img">
-              <img src={imgActivities} alt="" />
+              <img src={typeToImageActivityPath(type)} alt="" />
             </div>
           ) : (
             ""
@@ -367,8 +372,7 @@ function FormDetail() {
           {setType ? (
             <div className="form-img">
               <img
-                src={imgActivities}
-                alt=""
+                src={typeToImageActivityPath(type)}
                 // value={formValues.imgActivities}
               />
             </div>
