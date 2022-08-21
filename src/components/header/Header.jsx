@@ -6,7 +6,8 @@ import { useGlobalContext } from "../../context/Context";
 import axios from "axios";
 
 function Header() {
-  const { clearActivity, setActivities, fetchData } = useGlobalContext();
+  const { clearActivity, setActivities, fetchData, setPageNumber } =
+    useGlobalContext();
   const location = useLocation();
   const navigate = useNavigate();
   console.log(location);
@@ -15,7 +16,9 @@ function Header() {
 
   const fetchDatabyType = async (type) => {
     try {
-      const res = await axios.get(`${url}/activity/typesort?type=${type}`);
+      const res = await axios.get(`${url}/activity`, {
+        params: { type },
+      });
       console.log("fetchDatabyType", res.data);
       setActivities(res.data);
     } catch (e) {
@@ -23,9 +26,9 @@ function Header() {
     }
   };
 
-  useEffect(() => {
-    fetchDatabyType();
-  }, []);
+  // useEffect(() => {
+  //   fetchDatabyType();
+  // }, []);
 
   const handleClick = () => {
     clearActivity();
@@ -34,6 +37,7 @@ function Header() {
 
   const handleClickSortAll = (e) => {
     e.preventDefault();
+    setPageNumber(1);
     fetchData();
   };
 
