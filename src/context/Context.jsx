@@ -211,17 +211,8 @@ const AppProvider = ({ children }) => {
     setDescription("");
   };
 
-  //?!Pagination --------------------------------------------
+  //?! convert type to mapImageActivity
 
-  const currentPageData = useMemo(() => {
-    return activities;
-  }, [activities]);
-
-  console.log("currentPageData", currentPageData); //currentPageData
-
-  //?! Fetch Data Activity ------------------------------------------
-
-  //? convert type to mapImageActivity
   const typeToImageActivityPath = (val) => {
     if (val === "run") {
       return imgRun;
@@ -239,6 +230,8 @@ const AppProvider = ({ children }) => {
       return imgHike;
     }
   };
+
+  //?! Fetch Data Activity ------------------------------------------
 
   const url = "http://localhost:8000";
 
@@ -399,7 +392,6 @@ const AppProvider = ({ children }) => {
         fetchData,
         updateStatusActivity,
         buildActivityData,
-        currentPageData,
         totalActivities,
         typeToImageActivityPath,
       }}

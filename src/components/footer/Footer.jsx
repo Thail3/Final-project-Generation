@@ -4,17 +4,11 @@ import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import "./footer.css";
 import { useGlobalContext } from "../../context/Context";
-import axios from "axios";
 import { usePagination, DOTS } from "./usePagination";
 
 function Footer() {
-  const {
-    pageSize,
-    totalActivities,
-    pageNumber,
-    setActivities,
-    setPageNumber,
-  } = useGlobalContext();
+  const { pageSize, totalActivities, pageNumber, setPageNumber } =
+    useGlobalContext();
   console.log("totalActivities", totalActivities);
   console.log("pageSize", pageSize);
   console.log("pageNumber", pageNumber);
@@ -42,12 +36,6 @@ function Footer() {
       setPageNumber(pageNumber - 1);
     }
   };
-
-  // const handlePage = (numberOfPage) => {
-  //   setPageNumber(numberOfPage);
-  // };
-
-  // let lastPage = paginationRange[paginationRange.length - 1];
 
   return (
     <section>
