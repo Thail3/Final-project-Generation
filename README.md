@@ -1,3 +1,3 @@
 # Final-project-Generation
 
-# built project with team 10
+# build project with team 10
