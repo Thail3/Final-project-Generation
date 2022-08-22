@@ -245,7 +245,7 @@ const AppProvider = ({ children }) => {
 
   //?! Fetch Data Activity ------------------------------------------
 
-  const url = process.env.PORT_API;
+  const url = "https://final-project-backend-ashy.vercel.app";
 
   const fetchData = async () => {
     try {

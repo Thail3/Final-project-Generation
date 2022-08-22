@@ -15,7 +15,7 @@ function Header() {
   const navigate = useNavigate();
   console.log(location);
 
-  const url = process.env.PORT_API;
+  const url = "https://final-project-backend-ashy.vercel.app";
 
   const fetchDatabyType = async (type) => {
     try {
