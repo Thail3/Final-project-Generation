@@ -47,7 +47,6 @@ function FormDetail() {
     startDuration: startDuration == "" ? "" : startDuration,
     endDuration: endDuration == "" ? "" : endDuration,
     description: description || "",
-    imgActivities: imgActivities || "",
   };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -147,10 +146,46 @@ function FormDetail() {
     // );
   };
 
+  const getTimezoneOffset = () => {
+    function z(n) {
+      return (n < 10 ? "0" : "") + n;
+    }
+    var offset = new Date().getTimezoneOffset();
+    var sign = offset < 0 ? "+" : "-";
+    offset = Math.abs(offset);
+    return sign + z((offset / 60) | 0) + z(offset % 60);
+  };
+
+  const getDateTimeUtc = (dateString, timeString) => {
+    let dateUTCTextNoTimezone = new Date(
+      Date.UTC(
+        +dateString.substring(0, 4),
+        +dateString.substring(5, 7) - 1,
+        +dateString.substring(8, 10),
+        +timeString.substring(0, 2),
+        +timeString.substring(3, 5),
+        0,
+        0
+      )
+    ).toISOString();
+
+    let dateUTC = new Date(
+      Date.parse(dateUTCTextNoTimezone.slice(0, -1) + getTimezoneOffset()) // example getTimezoneOffset() -> +0700 (Asia/Bangkok)
+    );
+
+    return dateUTC;
+  };
+
+  const getDuration = (startDate, endDate) => {
+    let timeDiff = endDate.getTime() - startDate.getTime();
+    return timeDiff / 1000 / 60; // millis -> minutes
+  };
+
   useEffect(() => {
     console.log("date eff :", date);
     console.log("use effect isSubmit : ", isSubmit);
     console.log("use effect formErrors : ", formErrors);
+
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log("use effect form value in if : ", formValues);
       //set default value to empty string if no change
@@ -162,16 +197,35 @@ function FormDetail() {
         // newDuration,
         // newDesc
 
-        // เอาค่าใน form ไป set state เดิม
-        setActivityData(
-          formValues.title,
-          formValues.type,
-          formValues.date, //TODO Homework
-          formValues.description, //TODO Homework
-          formValues.description
-        );
+        // let dateWithoutTime = formValues.date;
+        // let startTime = formValues.startDuration;
+        // let endTime = formValues.endDuration;
+        // 2022-08-14T00:00:00.000Z
 
-        updateActivity(id);
+        // new Date().toISOString()
+        // '2022-08-21T07:29:31.558Z
+        // {date}T{start}:00.000Z
+
+        // let date = formValues.date + "T" + formValues.startDuration + ":00.000Z";
+
+        // เอาค่าใน form ไป set state เดิม
+        let startDateUtc = getDateTimeUtc(
+          formValues.date,
+          formValues.startDuration
+        );
+        let endDateUtc = getDateTimeUtc(
+          formValues.date,
+          formValues.endDuration
+        );
+        let updateData = {
+          title: formValues.title,
+          type: formValues.type,
+          date: startDateUtc.toISOString(),
+          duration: getDuration(startDateUtc, endDateUtc),
+          desc: formValues.description,
+        };
+
+        updateActivity(id, updateData);
       } else {
         createActivity();
       }
@@ -264,7 +318,7 @@ function FormDetail() {
 
           {setType ? (
             <div className="form-img">
-              <img src={typeToImageActivityPath(type)} alt="" />
+              <img src={typeToImageActivityPath(formValues.type)} alt="" />
             </div>
           ) : (
             ""
@@ -372,7 +426,7 @@ function FormDetail() {
           {setType ? (
             <div className="form-img">
               <img
-                src={typeToImageActivityPath(type)}
+                src={typeToImageActivityPath(formValues.type)}
                 // value={formValues.imgActivities}
               />
             </div>

@@ -47,6 +47,15 @@ const AppProvider = ({ children }) => {
     newDuration,
     newDesc
   ) => {
+    console.log(
+      "setActivityData input:",
+      newTitle,
+      newType,
+      newDate,
+      newDuration,
+      newDesc
+    );
+
     setTitle(newTitle);
     setType(newType);
 
@@ -211,17 +220,8 @@ const AppProvider = ({ children }) => {
     setDescription("");
   };
 
-  //?!Pagination --------------------------------------------
+  //?! convert type to mapImageActivity
 
-  const currentPageData = useMemo(() => {
-    return activities;
-  }, [activities]);
-
-  console.log("currentPageData", currentPageData); //currentPageData
-
-  //?! Fetch Data Activity ------------------------------------------
-
-  //? convert type to mapImageActivity
   const typeToImageActivityPath = (val) => {
     if (val === "run") {
       return imgRun;
@@ -239,6 +239,8 @@ const AppProvider = ({ children }) => {
       return imgHike;
     }
   };
+
+  //?! Fetch Data Activity ------------------------------------------
 
   const url = "http://localhost:8000";
 
@@ -259,7 +261,7 @@ const AppProvider = ({ children }) => {
       }
 
       // let mapImageActivity = new Map();
-      // for (let i = 0; i < res.data.length; i++) {
+      // for (let i = 0; i < res.data.length; i++) {\Thail3
       //   let id = res.data[i]._id;
       //   mapImageActivity.set(id, typeToImageActivityPath(res.data[i].type));
       // }
@@ -293,21 +295,13 @@ const AppProvider = ({ children }) => {
     }
   };
 
-  const updateActivity = async (id) => {
+  const updateActivity = async (id, updateData) => {
     try {
       const idx = activities.findIndex((activity) => activity._id === id);
       const newActivity = [...activities];
       console.log("Context statusActivity", statusActivity.get(id));
-
-      let updateData = {
-        title: title,
-        type: type,
-        date: date,
-        duration: duration(),
-        //? status have to fix when update
-        status: statusActivity.get(id),
-        desc: description,
-      };
+      //? status have to fix when update
+      updateData["status"] = statusActivity.get(id);
       console.log("Context updateData", updateData);
       const res = await axios.patch(`${url}/activity/${id}`, updateData);
       newActivity[idx] = res.data;
@@ -348,8 +342,9 @@ const AppProvider = ({ children }) => {
   const deleteActivity = async (id) => {
     try {
       await axios.delete(`${url}/activity/${id}`);
-      const newActivity = activities.filter((activity) => activity._id !== id);
-      setActivities(newActivity);
+      // const newActivity = activities.filter((activity) => activity._id !== id);
+      // setActivities(newActivity);
+      fetchData();
     } catch (e) {
       console.log(e);
     }
@@ -399,7 +394,6 @@ const AppProvider = ({ children }) => {
         fetchData,
         updateStatusActivity,
         buildActivityData,
-        currentPageData,
         totalActivities,
         typeToImageActivityPath,
       }}
