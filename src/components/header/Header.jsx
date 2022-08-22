@@ -4,6 +4,9 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/Context";
 import axios from "axios";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 function Header() {
   const { clearActivity, setActivities, fetchData, setPageNumber } =
@@ -12,7 +15,7 @@ function Header() {
   const navigate = useNavigate();
   console.log(location);
 
-  const url = "http://localhost:8000";
+  const url = process.env.PORT_API;
 
   const fetchDatabyType = async (type) => {
     try {
