@@ -6,9 +6,9 @@ import imgWalk from "../assets/walking.png";
 import imgWeight from "../assets/weight-lifting.png";
 import imgScuba from "../assets/scuba-diving.png";
 import imgHike from "../assets/hiking.png";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 
-dotenv.config();
+// dotenv.config();
 
 import React, { useState, useContext, useEffect, useMemo } from "react";
 

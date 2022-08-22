@@ -13,10 +13,10 @@ import imgWeight from "../../assets/weight-lifting.png";
 import imgScuba from "../../assets/scuba-diving.png";
 import imgHike from "../../assets/hiking.png";
 import axios from "axios";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 console.log(imgRun);
 
-dotenv.config();
+// dotenv.config();
 
 function FormDetail() {
   const {

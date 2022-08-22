@@ -4,9 +4,9 @@ import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../context/Context";
 import axios from "axios";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 
-dotenv.config();
+// dotenv.config();
 
 function Header() {
   const { clearActivity, setActivities, fetchData, setPageNumber } =
