@@ -41,6 +41,7 @@ function FormDetail() {
     updateActivity,
     clearActivity,
     typeToImageActivityPath,
+    url,
   } = useGlobalContext();
 
   const initialValues = {
@@ -68,7 +69,8 @@ function FormDetail() {
   console.log("FormDetail location", location.pathname);
   console.log("FormDetail useParams", id);
 
-  const url = "https://final-project-backend-ashy.vercel.app";
+  // const url = "https://final-project-backend-ashy.vercel.app";
+  // console.log("url in from detail : ", url)
 
   const getActivityById = async (acitvityId) => {
     try {

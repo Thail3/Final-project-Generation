@@ -399,6 +399,7 @@ const AppProvider = ({ children }) => {
         buildActivityData,
         totalActivities,
         typeToImageActivityPath,
+        url
       }}
     >
       {children}

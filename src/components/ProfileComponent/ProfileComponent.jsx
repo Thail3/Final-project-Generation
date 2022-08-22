@@ -8,7 +8,7 @@ import "./ProfileComponent.css";
 
 export default function ProfileComponent({
   username = "Username 1",
-  profilePhoto = "https://pbs.twimg.com/profile_images/429442426038538240/6Ac9kykG_400x400.jpeg",
+  profilePhoto = "",
   coverPhoto = "https://images.template.net/wp-content/uploads/2014/11/facebook-cover-photos-nature.jpg",
   email = "foobar@foobar.com",
 }) {
