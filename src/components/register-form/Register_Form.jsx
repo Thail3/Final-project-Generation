@@ -5,6 +5,8 @@ import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
+import axios from "axios";
+import { useGlobalContext } from "../../context/Context";
 
 function Register_Form() {
   const initialValues = { username: "", email: "", password: "" };
@@ -12,6 +14,7 @@ function Register_Form() {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const { url, body } = useGlobalContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,10 +27,29 @@ function Register_Form() {
     setIsSubmit(true);
   };
 
+  const register = async () => {
+    try {
+      const res = await axios.post(url + "/users", { ...formValues });
+      const data = res.data;
+      localStorage.setItem("token", data.saveUser.token);
+      window.location = "/";
+    } catch (error) {
+      console.log(error);
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status <= 500
+      ) {
+        setFormErrors({ ...formErrors, response: error.response.data.message });
+      }
+    }
+  };
+
   useEffect(() => {
-    console.log(formErrors);
+    // console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
-      console.log(formValues);
+      // console.log(formValues);
+      register();
     }
   }, [formErrors]);
 
@@ -76,10 +98,10 @@ function Register_Form() {
           />
         </div>
         {formErrors.username ? (
-        <div className="text-danger mb-2">
-          {formErrors.username}
-        </div>
-      ) : ("")}
+          <div className="text-danger mb-2">{formErrors.username}</div>
+        ) : (
+          ""
+        )}
 
         <div className="register-form-password">
           <p>PASSWORD</p>
@@ -107,10 +129,10 @@ function Register_Form() {
           </InputGroup>
         </div>
         {formErrors.password ? (
-        <div className="text-danger mb-2">
-          {formErrors.password}
-        </div>
-      ) : ("")}
+          <div className="text-danger mb-2">{formErrors.password}</div>
+        ) : (
+          ""
+        )}
 
         <div className="register-form-email">
           <p>EMAIL</p>
@@ -126,12 +148,19 @@ function Register_Form() {
           />
         </div>
         {formErrors.email ? (
-        <div className="text-danger mb-2">
-          {formErrors.email}
-        </div>
-      ) : ("")}
+          <div className="text-danger mb-2">{formErrors.email}</div>
+        ) : (
+          ""
+        )}
+        {formErrors.response ? (
+          <div className="text-danger mb-2">{formErrors.response}</div>
+        ) : (
+          ""
+        )}
         <div className="register-form-button">
-          <button type="submit" onClick={handleSubmit}>REGISTER</button>
+          <button type="submit" onClick={handleSubmit}>
+            REGISTER
+          </button>
         </div>
       </Form>
     </section>

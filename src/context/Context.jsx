@@ -247,12 +247,26 @@ const AppProvider = ({ children }) => {
 
   const url = "https://final-project-backend-ashy.vercel.app";
 
+  const body = { token: localStorage.getItem("token")}
+  console.log("body in context : ", body);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Aceess-Control-Allow-Origin": "*",
+      withCredentials: true,
+      // Authorization: "bearer " + localStorage.getItem("token"),
+      "x-access-token": localStorage.getItem("token"),
+    },
+  };
+
+  // console.log("config in context : ", config);
+
   const fetchData = async () => {
+    // const res = await axios.get(url + '/activity', config)
+    // console.log("res : cont" , res)
     try {
-      const res = await axios.get(
-        `${url}/activity?page=${pageNumber}&limit=${pageSize}`
-        // `${url}/activity`
-      );
+      const res = await axios.get(`${url}/activity?page=${pageNumber}&limit=${pageSize}`, config);
       console.log("Context fetchData", res.data);
 
       let mapStatusActivity = new Map();
@@ -291,6 +305,7 @@ const AppProvider = ({ children }) => {
         date: startDateTime(),
         duration: duration(),
         desc: description,
+        token: body.token,
       });
       fetchData();
     } catch (e) {
@@ -399,7 +414,8 @@ const AppProvider = ({ children }) => {
         buildActivityData,
         totalActivities,
         typeToImageActivityPath,
-        url
+        url,
+        body,
       }}
     >
       {children}

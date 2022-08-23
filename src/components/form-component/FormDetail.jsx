@@ -20,7 +20,7 @@ console.log(imgRun);
 
 function FormDetail() {
   const {
-    activities,
+    // activities,
     setActivityData,
     buildActivityData,
     title,
@@ -223,6 +223,7 @@ function FormDetail() {
           formValues.endDuration
         );
         let updateData = {
+          ...formValues,
           title: formValues.title,
           type: formValues.type,
           date: startDateUtc.toISOString(),
@@ -241,7 +242,7 @@ function FormDetail() {
 
     // fix refresh data missing
     //!เปลี่ยนชื่อ abc ให้เป้นตัวอื่นที่ไม่ซ้ำกัน
-    if (editMode()) {
+    if (editMode() && id) {
       getActivityById(id).then((abc) => {
         initialEditActivityPage(abc);
       });

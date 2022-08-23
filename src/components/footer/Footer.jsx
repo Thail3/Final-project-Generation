@@ -54,7 +54,7 @@ function Footer() {
           <AiOutlineArrowLeft type="button" className="footer-arrow" />
         </div>
 
-        {paginationRange.map((pageNum) => {
+        {paginationRange?.map((pageNum) => {
           if (pageNum === DOTS) {
             return <li className="pagination-item dots">&#8230;</li>;
           }
