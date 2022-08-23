@@ -9,8 +9,14 @@ import axios from "axios";
 // dotenv.config();
 
 function Header() {
-  const { clearActivity, setActivities, fetchData, setPageNumber, url } =
-    useGlobalContext();
+  const {
+    clearActivity,
+    setActivities,
+    fetchData,
+    setPageNumber,
+    url,
+    config,
+  } = useGlobalContext();
   const location = useLocation();
   const navigate = useNavigate();
   console.log(location);
@@ -21,6 +27,7 @@ function Header() {
   const fetchDatabyType = async (type) => {
     try {
       const res = await axios.get(`${url}/activity`, {
+        ...config,
         params: { type },
       });
       console.log("fetchDatabyType", res.data);

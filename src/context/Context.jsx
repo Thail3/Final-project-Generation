@@ -247,7 +247,7 @@ const AppProvider = ({ children }) => {
 
   const url = "https://final-project-backend-ashy.vercel.app";
 
-  const body = { token: localStorage.getItem("token")}
+  const body = { token: localStorage.getItem("token") };
   console.log("body in context : ", body);
 
   const config = {
@@ -266,7 +266,10 @@ const AppProvider = ({ children }) => {
     // const res = await axios.get(url + '/activity', config)
     // console.log("res : cont" , res)
     try {
-      const res = await axios.get(`${url}/activity?page=${pageNumber}&limit=${pageSize}`, config);
+      const res = await axios.get(
+        `${url}/activity?page=${pageNumber}&limit=${pageSize}`,
+        config
+      );
       console.log("Context fetchData", res.data);
 
       let mapStatusActivity = new Map();
@@ -359,7 +362,7 @@ const AppProvider = ({ children }) => {
 
   const deleteActivity = async (id) => {
     try {
-      await axios.delete(`${url}/activity/${id}`);
+      await axios.delete(`${url}/activity/${id}`, config);
       // const newActivity = activities.filter((activity) => activity._id !== id);
       // setActivities(newActivity);
       fetchData();
@@ -416,6 +419,7 @@ const AppProvider = ({ children }) => {
         typeToImageActivityPath,
         url,
         body,
+        config,
       }}
     >
       {children}
