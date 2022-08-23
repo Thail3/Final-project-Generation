@@ -324,7 +324,7 @@ const AppProvider = ({ children }) => {
       //? status have to fix when update
       updateData["status"] = statusActivity.get(id);
       console.log("Context updateData", updateData);
-      const res = await axios.patch(`${url}/activity/${id}`, updateData);
+      const res = await axios.patch(`${url}/activity/${id}`, updateData, config);
       newActivity[idx] = res.data;
       setActivities(newActivity);
       fetchData();
@@ -351,7 +351,7 @@ const AppProvider = ({ children }) => {
         desc: currentData.description,
       };
       console.log("Context updateData", updateData);
-      const res = await axios.patch(`${url}/activity/${id}`, updateData);
+      const res = await axios.patch(`${url}/activity/${id}`, updateData, config);
       newActivity[idx] = res.data;
       setActivities(newActivity);
       fetchData();
