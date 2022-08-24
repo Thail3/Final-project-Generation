@@ -9,17 +9,25 @@ import axios from "axios";
 // dotenv.config();
 
 function Header() {
-  const { clearActivity, setActivities, fetchData, setPageNumber } =
-    useGlobalContext();
+  const {
+    clearActivity,
+    setActivities,
+    fetchData,
+    setPageNumber,
+    url,
+    config,
+  } = useGlobalContext();
   const location = useLocation();
   const navigate = useNavigate();
   console.log(location);
 
-  const url = "https://final-project-backend-ashy.vercel.app";
+  // const url = "https://final-project-backend-ashy.vercel.app";
+  // console.log("url in header : ", url);
 
   const fetchDatabyType = async (type) => {
     try {
       const res = await axios.get(`${url}/activity`, {
+        ...config,
         params: { type },
       });
       console.log("fetchDatabyType", res.data);

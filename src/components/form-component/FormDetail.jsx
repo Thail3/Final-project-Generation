@@ -20,7 +20,7 @@ console.log(imgRun);
 
 function FormDetail() {
   const {
-    activities,
+    // activities,
     setActivityData,
     buildActivityData,
     title,
@@ -41,6 +41,7 @@ function FormDetail() {
     updateActivity,
     clearActivity,
     typeToImageActivityPath,
+    url,
   } = useGlobalContext();
 
   const initialValues = {
@@ -68,7 +69,8 @@ function FormDetail() {
   console.log("FormDetail location", location.pathname);
   console.log("FormDetail useParams", id);
 
-  const url = "https://final-project-backend-ashy.vercel.app";
+  // const url = "https://final-project-backend-ashy.vercel.app";
+  // console.log("url in from detail : ", url)
 
   const getActivityById = async (acitvityId) => {
     try {
@@ -221,6 +223,7 @@ function FormDetail() {
           formValues.endDuration
         );
         let updateData = {
+          ...formValues,
           title: formValues.title,
           type: formValues.type,
           date: startDateUtc.toISOString(),
@@ -239,7 +242,7 @@ function FormDetail() {
 
     // fix refresh data missing
     //!เปลี่ยนชื่อ abc ให้เป้นตัวอื่นที่ไม่ซ้ำกัน
-    if (editMode()) {
+    if (editMode() && id) {
       getActivityById(id).then((abc) => {
         initialEditActivityPage(abc);
       });

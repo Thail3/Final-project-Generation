@@ -247,11 +247,28 @@ const AppProvider = ({ children }) => {
 
   const url = "https://final-project-backend-ashy.vercel.app";
 
+  const body = { token: localStorage.getItem("token") };
+  console.log("body in context : ", body);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      "Aceess-Control-Allow-Origin": "*",
+      withCredentials: true,
+      // Authorization: "bearer " + localStorage.getItem("token"),
+      "x-access-token": localStorage.getItem("token"),
+    },
+  };
+
+  // console.log("config in context : ", config);
+
   const fetchData = async () => {
+    // const res = await axios.get(url + '/activity', config)
+    // console.log("res : cont" , res)
     try {
       const res = await axios.get(
-        `${url}/activity?page=${pageNumber}&limit=${pageSize}`
-        // `${url}/activity`
+        `${url}/activity?page=${pageNumber}&limit=${pageSize}`,
+        config
       );
       console.log("Context fetchData", res.data);
 
@@ -291,6 +308,7 @@ const AppProvider = ({ children }) => {
         date: startDateTime(),
         duration: duration(),
         desc: description,
+        token: body.token,
       });
       fetchData();
     } catch (e) {
@@ -306,7 +324,7 @@ const AppProvider = ({ children }) => {
       //? status have to fix when update
       updateData["status"] = statusActivity.get(id);
       console.log("Context updateData", updateData);
-      const res = await axios.patch(`${url}/activity/${id}`, updateData);
+      const res = await axios.patch(`${url}/activity/${id}`, updateData, config);
       newActivity[idx] = res.data;
       setActivities(newActivity);
       fetchData();
@@ -333,7 +351,7 @@ const AppProvider = ({ children }) => {
         desc: currentData.description,
       };
       console.log("Context updateData", updateData);
-      const res = await axios.patch(`${url}/activity/${id}`, updateData);
+      const res = await axios.patch(`${url}/activity/${id}`, updateData, config);
       newActivity[idx] = res.data;
       setActivities(newActivity);
       fetchData();
@@ -344,7 +362,7 @@ const AppProvider = ({ children }) => {
 
   const deleteActivity = async (id) => {
     try {
-      await axios.delete(`${url}/activity/${id}`);
+      await axios.delete(`${url}/activity/${id}`, config);
       // const newActivity = activities.filter((activity) => activity._id !== id);
       // setActivities(newActivity);
       fetchData();
@@ -399,6 +417,9 @@ const AppProvider = ({ children }) => {
         buildActivityData,
         totalActivities,
         typeToImageActivityPath,
+        url,
+        body,
+        config,
       }}
     >
       {children}
