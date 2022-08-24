@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "react-avatar";
 import Button from "react-bootstrap/Button";
 import { AiFillEdit } from "react-icons/ai";
@@ -12,6 +12,12 @@ export default function ProfileComponent({
   coverPhoto = "https://images.template.net/wp-content/uploads/2014/11/facebook-cover-photos-nature.jpg",
   email = "foobar@foobar.com",
 }) {
+  const [profileImage, setProfileImage] = useState("");
+  const [coverImage, setCoverImage] = useState("");
+  const [selectedFile, setSelectedFile] = useState("");
+
+  const handleChangeProfileImg = () => {};
+
   return (
     <div className="container p-0 profile text-center">
       <div className="profile-header">
@@ -26,7 +32,14 @@ export default function ProfileComponent({
         <div className="profile-change-pic">
           <Button variant="outline-primary" size="lg" className="m-3">
             <AiFillPicture className="m-1 mb-2" />
-            <span className="m-2">Update profile picture</span>
+            <input
+              type="file"
+              name="image"
+              onChange={handleChangeProfileImg}
+              className="m-2"
+            >
+              Update profile picture
+            </input>
           </Button>
           <Button variant="outline-secondary" size="lg" className="m-3">
             <AiFillPicture className="m-1 mb-2" />
